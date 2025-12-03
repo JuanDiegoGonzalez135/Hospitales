@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Paciente</title>
+    <script type="module" src="/js/api.js"></script>
+    <script type="module" src="/js/pacientes.js"></script>
+</head>
+<body>
+    <h1>Registrar Paciente</h1>
+
+    <form id="formCrearPaciente">
+        <label>Nombre:</label>
+        <input type="text" id="nombre" required><br>
+
+        <label>Apellido:</label>
+        <input type="text" id="apellido" required><br>
+
+        <label>Edad:</label>
+        <input type="number" id="edad" required><br>
+
+        <label>Teléfono:</label>
+        <input type="text" id="telefono" required><br>
+
+        <label>Correo:</label>
+        <input type="text" id="correo" required><br>
+
+        <label>Diagnóstico:</label><br>
+        <textarea id="diagnostico" rows="5"></textarea><br><br>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <a href="lista.html">Volver</a>
+</body>
+</html>
