@@ -1,24 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habitaciones-Crear</title>
+    <title>Crear Habitación</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style-forms.css">
+    <script type="module" src="../../js/habitaciones.js"></script>
+
 </head>
 
 <body>
-    <h1>Crear Habitación</h1>
 
-    <form id="formCrearHabitacion">
+    <h1 class="page-title">Crear Habitación</h1>
 
-        <label>Nombre:</label>
-        <input type="text" id="nombre" required>
+    <div class="card-glass">
 
-        <button type="submit">Guardar</button>
-    </form>
+        <form id="formCrearHabitacion">
 
-    <script type="module" src="/js/habitaciones.js"></script>
+            <label for="nombre">Nombre de la Habitación</label>
+            <input class="form-control mb-3" type="text" id="nombre" required>
+
+            <button class="btn-main" type="submit">Guardar</button>
+        </form>
+
+        <a href="./lista.html">
+            <button class="btn-back">Volver</button>
+        </a>
+
+    </div>
+    <script type="module" src="../../js/habitaciones.js"></script>
+    <script src="../../js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -1,31 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enfermeros-Editar</title>
+    <title>Editar Enfermero</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style-forms.css">
+    <script type="module" src="../../js/enfermeros.js"></script>
+
+    <style>
+        /* Ajustes solo para edición */
+        .edit-title {
+            font-size: 2.1rem;
+            font-weight: 600;
+            color: #2b4b9b;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #6272aa;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 14px;
+        }
+    </style>
 </head>
 
 <body>
-    <form id="formEditarEnfermero">
-        <label>Nombre:</label>
-        <input id="nombre" required>
 
-        <label>Apellido:</label>
-        <input id="apellido" required>
+    <h1 class="edit-title">Editar Información</h1>
+    <p class="subtitle">Ajusta los datos del enfermero</p>
 
-        <label>Teléfono:</label>
-        <input id="telefono" required>
+    <div class="card-glass">
 
-        <label>Correo:</label>
-        <input id="correo" type="email" required>
+        <form id="formEditarEnfermero">
 
-        <button>Actualizar</button>
-    </form>
-    <a href="lista.html">Volver</a>
-    
-    <script type="module" src="/js/enfermeros.js"></script>
+            <div class="form-group">
+                <label>Nombre</label>
+                <input class="form-control" id="nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label>Apellido</label>
+                <input class="form-control" id="apellido" required>
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input class="form-control" id="telefono" required>
+            </div>
+
+            <div class="form-group">
+                <label>Correo</label>
+                <input class="form-control" id="correo" type="email" required>
+            </div>
+
+            <button class="btn-main" type="submit">Actualizar</button>
+
+        </form>
+
+        <a href="lista.html">
+            <button class="btn-back">Volver</button>
+        </a>
+    </div>
+    <script src="../../js/bootstrap.min.js"></script>
 </body>
 
 </html>

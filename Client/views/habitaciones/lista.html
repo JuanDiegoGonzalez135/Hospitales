@@ -1,28 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habitaciones-Listado</title>
+    <title>Habitaciones - Listado</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style-forms.css">
+
+    <script type="module" src="../../js/habitaciones.js"></script>
 </head>
+
 <body>
-   <h1>Habitaciones</h1>
 
-    <a href="crear.html">Crear habitación</a>
+    <h1 class="page-title">Habitaciones</h1>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Camas</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="tablaHabitaciones"></tbody>
-    </table>
+    <div class="table-container">
 
-    <script type="module" src="/js/habitaciones.js"></script>
+        <div style="text-align: right; margin-bottom: 15px;">
+            <a href="crear.html">
+                <button class="btn-main" style="max-width: 200px;">Crear habitación</button>
+            </a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Camas</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody id="tablaHabitaciones"></tbody>
+        </table>
+
+    </div>
+
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

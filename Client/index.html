@@ -1,11 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Iniciar Sesión</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="./css/style-login.css">
 </head>
 <body>
-    <h1>Integradora Hospitales</h1>
+
+    <div class="login-wrapper">
+
+        <div class="login-card shadow-lg">
+            <div class="login-header text-center mb-4">
+                <h2 class="title">Bienvenido</h2>
+                <p class="subtitle">Accede a tu panel de salud</p>
+            </div>
+
+            <!-- FORMULARIO -->
+            <form id="formLogin">
+                <div class="form-group mb-3">
+                    <label class="form-label">Correo electrónico</label>
+                    <input id="correo" type="email" class="form-control input-soft" required>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-label">Contraseña</label>
+                    <input id="password" type="password" class="form-control input-soft" required>
+                </div>
+
+                <button type="submit" class="btn btn-login w-100">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap -->
+    <script src="./js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script de Login -->
+    <script>
+        document.getElementById("formLogin").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const correo = document.getElementById("correo").value;
+            const pass = document.getElementById("password").value;
+
+            // 🔹 Aquí puedes validar contra tu API o lo que uses
+            // Por ahora pondré un login de ejemplo:
+            if (correo === "admin@utez.com" && pass === "admin") {
+                window.location.href = "./dashboard.html";
+            } else {
+                alert("Correo o contraseña incorrectos");
+            }
+        });
+    </script>
+
 </body>
 </html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Código QR del Paciente</title>
+
+    <!-- Estilos globales -->
+    <link rel="stylesheet" href="../../css/style-forms.css">
+
+    <!-- Librería para generar QR (si la usas) -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script> -->
+
+    <script type="module" src="../../js/api.js"></script>
+    <script type="module" src="../../js/pacientes-qr.js"></script>
+</head>
+
+<body>
+
+    <h1 class="page-title">Código QR del Paciente</h1>
+
+    <div class="card-glass" style="text-align: center;">
+
+        <p style="margin-bottom: 15px; font-weight: 500;">
+            Escanea este QR para ver la información del paciente
+        </p>
+
+        <!-- CONTENEDOR DEL QR -->
+        <canvas id="qrCanvas" style="margin: 20px auto; display: block;"></canvas>
+
+        <!-- Nombre del paciente debajo -->
+        <h3 id="pacienteNombre" style="margin-top: 10px; color:#1a3c7e;"></h3>
+
+        <!-- Botón para descargar -->
+        <button id="btnDescargarQR" class="btn-main" style="margin-top: 15px;">
+            Descargar QR
+        </button>
+
+        <!-- Botón regresar -->
+        <button onclick="window.location.href='lista.html'" class="btn-back">
+            Volver
+        </button>
+
+    </div>
+
+</body>
+
+</html>

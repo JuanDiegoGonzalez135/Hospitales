@@ -21,6 +21,7 @@ async function cargarCamas() {
             <td>
                 <a href="editar.html?id=${c.id}">Editar</a>
                 <button onclick="eliminarCama(${c.id})">Eliminar</button>
+                <a href="generar-qr.html?id=${c.id}">Generar QR</a>
             </td>
         `;
 

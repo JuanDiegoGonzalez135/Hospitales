@@ -1,36 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear-efermero</title>
+    <title>Registrar Enfermero</title>
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style-forms.css">
+
 </head>
 
 <body>
-    <form id="formCrearEnfermero">
-        
-        <label>Nombre:</label>
-        <input id="nombre" required>
 
-        <label>Apellido:</label>
-        <input id="apellido" required>
+    <h1 class="page-title">Registrar Enfermero 🩺</h1>
 
-        <label>Teléfono:</label>
-        <input id="telefono" required>
+    <div class="card-glass">
 
-        <label>Correo:</label>
-        <input id="correo" required>
+        <form id="formCrearEnfermero">
 
-        <label>Contraseña:</label>
-        <input id="password" required>
+            <label>Nombre:</label>
+            <input id="nombre" class="form-control" required>
 
-        <button>Guardar</button>
-    </form>
+            <label>Apellido:</label>
+            <input id="apellido" class="form-control" required>
 
-    <a href="lista.html">Volver</a>
-    
-    <script type="module" src="/js/enfermeros.js"></script>
+            <label>Teléfono:</label>
+            <input id="telefono" class="form-control" required>
+
+            <label>Correo:</label>
+            <input id="correo" class="form-control" required>
+
+            <label>Contraseña:</label>
+            <input id="password" type="password" class="form-control" required>
+
+            <button class="btn-main" type="submit">Guardar</button>
+        </form>
+
+        <button type="button" class="btn-back" onclick="window.location.href='./lista.html'">
+            Volver a la Lista
+        </button>
+
+    </div>
+
+    <script type="module" src="../../js/enfermeros.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

@@ -3,29 +3,40 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Crear Cama</title>
-    <script type="module" src="/js/api.js"></script>
-    <script type="module" src="/js/camas.js"></script>
+    <title>Registrar Cama</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style-forms.css">
+    <script type="module" src="../../js/api.js"></script>
+    <script type="module" src="../../js/camas.js"></script>
 </head>
 
 <body>
-    <h1>Registrar Cama</h1>
 
-    <form id="formCrearCama">
+    <h1 class="page-title">Registrar Cama</h1>
 
-        <label>Código:</label>
-        <input type="text" id="codigo" required><br>
+    <div class="card-glass">
+        <form id="formCrearCama">
 
-        <label>Número:</label>
-        <input type="text" id="numero" required><br>
+            <label class="form-label">Código:</label>
+            <input type="text" id="codigo" class="form-control" required>
 
-        <label>Habitación:</label>
-        <select id="habitacion" required></select><br><br>
+            <label class="form-label mt-3">Número:</label>
+            <input type="text" id="numero" class="form-control" required>
 
-        <button type="submit">Guardar</button>
-    </form>
+            <label class="form-label mt-3">Habitación:</label>
+            <select id="habitacion" class="form-control" required></select>
 
-    <a href="lista.html">Volver</a>
+            <button type="submit" class="btn-main mt-4">Guardar</button>
+        </form>
+        <div class="mt-1">
+            <button type="button" class="btn-back" onclick="window.location.href='lista.html'">
+                Volver a la Lista
+            </button>
+        </div>
+    </div>
+    
+    <script src="../../js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

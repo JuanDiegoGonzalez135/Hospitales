@@ -1,23 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habitaciones-Editar</title>
+    <title>Editar Habitación</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/style-forms.css">
+    <script type="module" src="../../js/habitaciones.js"></script>
+
 </head>
 
 <body>
-    <h1>Editar Habitación</h1>
-    <form id="formEditarHabitacion">
 
-        <label>Nombre:</label>
-        <input type="text" id="nombre" required>
+    <h1 class="page-title">Editar Habitación</h1>
 
-        <button type="submit">Actualizar</button>
-    </form>
+    <div class="card-glass">
 
-    <script type="module" src="/js/habitaciones.js"></script>
+        <form id="formEditarHabitacion" class="mb-3">
+            <label for="nombre">Nombre de la Habitación</label>
+            <input class="form-control" type="text" id="nombre" required>
+            <button class="btn-main" type="submit">Actualizar</button>
+        </form>
+
+        <a href="./lista.html">
+            <button class="btn-back">Volver</button>
+        </a>
+
+    </div>
+
 </body>
 
 </html>

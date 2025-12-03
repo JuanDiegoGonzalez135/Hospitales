@@ -1,36 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Crear Paciente</title>
-    <script type="module" src="/js/api.js"></script>
-    <script type="module" src="/js/pacientes.js"></script>
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style-forms.css">
+
+    <script type="module" src="../../js/api.js"></script>
+    <script type="module" src="../../js/pacientes.js"></script>
 </head>
+
 <body>
-    <h1>Registrar Paciente</h1>
 
-    <form id="formCrearPaciente">
-        <label>Nombre:</label>
-        <input type="text" id="nombre" required><br>
+    <h1 class="page-title">Registrar Paciente</h1>
 
-        <label>Apellido:</label>
-        <input type="text" id="apellido" required><br>
+    <div class="card-glass">
 
-        <label>Edad:</label>
-        <input type="number" id="edad" required><br>
+        <form id="formCrearPaciente">
 
-        <label>Teléfono:</label>
-        <input type="text" id="telefono" required><br>
+            <label>Nombre:</label>
+            <input class="form-control" type="text" id="nombre" required>
 
-        <label>Correo:</label>
-        <input type="text" id="correo" required><br>
+            <label>Apellido:</label>
+            <input class="form-control" type="text" id="apellido" required>
 
-        <label>Diagnóstico:</label><br>
-        <textarea id="diagnostico" rows="5"></textarea><br><br>
+            <label>Edad:</label>
+            <input class="form-control" type="number" id="edad" required>
 
-        <button type="submit">Guardar</button>
-    </form>
+            <label>Teléfono:</label>
+            <input class="form-control" type="text" id="telefono" required>
 
-    <a href="lista.html">Volver</a>
+            <label>Correo:</label>
+            <input class="form-control" type="email" id="correo" required>
+
+            <label>Diagnóstico:</label>
+            <textarea class="form-control" id="diagnostico" rows="4"></textarea>
+
+            <button class="btn-main" type="submit">Guardar</button>
+        </form>
+
+        <a href="./lista.html">
+            <button class="btn-back">Volver</button>
+        </a>
+
+    </div>
+
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
