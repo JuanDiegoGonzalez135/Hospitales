@@ -18,12 +18,18 @@
 <body>
 
     <h1 class="page-title">Lista de Pacientes</h1>
+        <nav aria-label="breadcrumb" style="margin-bottom: 1rem;">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="../../dashboard.html">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Pacientes</li>
+            </ol>
+        </nav>
 
     <div class="table-container">
 
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
-            <a href="./crear.html" class="btn-main" style="max-width: 180px; text-align:center;">
-                + Crear Paciente
+        <div style="text-align: right; margin-bottom: 15px;">
+            <a href="crear.html">
+                <button class="btn-main" style="max-width: 200px;">Registrar Paciente</button>
             </a>
         </div>
 

@@ -1,3 +1,9 @@
+<nav aria-label="breadcrumb" style="margin-bottom: 1rem;">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../../dashboard.html">Inicio</a></li>
+        <li class="breadcrumb-item" aria-current="page">Camas</li>
+    </ol>
+</nav>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -20,12 +26,15 @@
 
     <h1 class="page-title">Lista de Camas</h1>
 
-    <div class="text-center mb-3">
-        <a href="crear.html" class="btn-main" style="max-width: 250px;">+ Crear Cama</a>
-    </div>
-
     <div class="table-container">
-        <table class="table table-bordered table-striped align-middle">
+
+        <div style="text-align: right; margin-bottom: 15px;">
+            <a href="crear.html">
+                <button class="btn-main" style="max-width: 200px;">Registrar Paciente</button>
+            </a>
+        </div>
+
+        <table>
             <thead>
                 <tr>
                     <th>ID</th>
