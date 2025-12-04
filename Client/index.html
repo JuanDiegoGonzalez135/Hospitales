@@ -13,27 +13,30 @@
 </head>
 <body>
 
-    <div class="login-wrapper">
-
+<div class="login-wrapper">
         <div class="login-card shadow-lg">
             <div class="login-header text-center mb-4">
                 <h2 class="title">Bienvenido</h2>
                 <p class="subtitle">Accede a tu panel de salud</p>
             </div>
 
-            <!-- FORMULARIO -->
+            <div id="alertError" class="alert alert-danger d-none" role="alert"></div>
+
             <form id="formLogin">
                 <div class="form-group mb-3">
                     <label class="form-label">Correo electrónico</label>
-                    <input id="correo" type="email" class="form-control input-soft" required>
+                    <input id="correo" type="email" class="form-control input-soft" placeholder="correo@email.com" required>
                 </div>
 
                 <div class="form-group mb-4">
                     <label class="form-label">Contraseña</label>
-                    <input id="password" type="password" class="form-control input-soft" required>
+                    <input id="password" type="password" class="form-control input-soft" placeholder="••••••••" required>
                 </div>
 
-                <button type="submit" class="btn btn-login w-100">Iniciar Sesión</button>
+                <button type="submit" class="btn btn-login w-100" id="btnSubmit">
+                    <span id="btnText">Iniciar Sesión</span>
+                    <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
+                </button>
             </form>
         </div>
     </div>

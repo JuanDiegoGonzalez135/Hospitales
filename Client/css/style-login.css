@@ -76,6 +76,7 @@ body {
 .btn-login:hover {
     background: #345ee0;
     box-shadow: 0 8px 20px rgba(67, 118, 255, 0.35);
+    color: #ffffff;
     transform: translateY(-2px);
 }
 

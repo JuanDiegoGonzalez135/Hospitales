@@ -24,7 +24,52 @@ body {
     color: #1a3c7e;
 }
 
-/* CARD GLASS */
+/* ============================== */
+/*       DASHBOARD STYLES         */
+/* ============================== */
+
+/* GRID GENERAL */
+.dashboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+}
+
+/* CARD */
+.dash-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 18px;
+    padding: 25px;
+    text-align: center;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px rgba(140, 160, 210, 0.25);
+    transition: 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.dash-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(120, 140, 200, 0.35);
+}
+
+.dash-card h2 {
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #1a3c7e;
+}
+
+.dash-card p {
+    color: #4d5c7a;
+    font-size: 0.95rem;
+}
+
+/* ============================== */
+/*          CARD GLASS            */
+/* ============================== */
 .card-glass {
     background: rgba(255,255,255,0.75);
     border-radius: 20px;
@@ -56,7 +101,7 @@ body {
     color: white;
     border-radius: 12px;
     padding: 12px;
-    inline-size: 100%;
+    width: 100%;
     font-weight: 500;
     border: none;
     transition: 0.2s;
@@ -71,16 +116,19 @@ body {
 /* LINK VOLVER */
 .link-back {
     display: inline-block;
-    margin-block-start: 15px;
+    margin-top: 15px;
+    width: 100%;
     text-align: center;
-    inline-size: 100%;
     color: #345ee0;
     font-weight: 500;
 }
 
-/* TABLA ESTÉTICA */
+/* ============================== */
+/*        TABLA ESTÉTICA         */
+/* ============================== */
+
 .table-container {
-    max-inline-size: 950px;
+    max-width: 950px;
     margin: 0 auto;
     background: rgba(255,255,255,0.75);
     padding: 20px;
@@ -91,7 +139,7 @@ body {
 }
 
 table {
-    inline-size: 100%;
+    width: 100%;
     border-radius: 12px;
     overflow: hidden;
 }
@@ -144,7 +192,7 @@ tbody tr:nth-child(even) td {
     border: none;
     cursor: pointer;
     font-size: 1rem;
-    margin-inline-end: 6px;
+    margin-right: 6px;
     transition: 0.25s ease;
 }
 
@@ -172,6 +220,7 @@ tbody tr:nth-child(even) td {
     box-shadow: 0 4px 10px rgba(255, 180, 180, 0.5);
 }
 
+/* Botón volver */
 .btn-back {
     margin-top: 15px;
     width: 100%;
