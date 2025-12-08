@@ -185,3 +185,14 @@ export const EnfermeroAPI = {
         );
     }
 };
+
+/* --------------------- AUTH --------------------- */
+
+export const AuthAPI = {
+    login(correo, password) {
+        return request("http://localhost:8080/api/auth", "POST", {
+            correo,
+            password
+        });
+    }
+};

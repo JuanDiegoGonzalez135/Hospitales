@@ -6,35 +6,90 @@
     <title>Dashboard</title>
 
     <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/style-forms.css">
+    <link rel="stylesheet" href="./css/dashboard.css">
+    
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
+        <div class="container-fluid">
 
-    <h1 class="page-title">Panel General del Sistema</h1>
+            <a class="navbar-brand brand-glow" href="#">Hospital System</a>
 
-    <div class="dashboard-container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <a href="./views/camas/lista.html" class="dash-card" style="text-decoration:none; color:inherit;">
-            <h2>Camas</h2>
-            <p>Administrar camas disponibles</p>
-        </a>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-        <a href="./views/enfermeros/lista.html" class="dash-card" style="text-decoration:none; color:inherit;">
-            <h2>Enfermeros</h2>
-            <p>Lista, edición y control</p>
-        </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./views/camas/lista.html">Camas</a>
+                    </li>
 
-        <a href="./views/habitaciones/lista.html" class="dash-card" style="text-decoration:none; color:inherit;">
-            <h2>Habitaciones</h2>
-            <p>Asignación y gestión completa</p>
-        </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./views/enfermeros/lista.html">Enfermeros</a>
+                    </li>
 
-        <a href="./views/pacientes/lista.html" class="dash-card" style="text-decoration:none; color:inherit;">
-            <h2>Pacientes</h2>
-            <p>Registro, consulta y expediente</p>
-        </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./views/habitaciones/lista.html">Habitaciones</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="./views/pacientes/lista.html">Pacientes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <button id="logoutBtn" class="btn btn-danger ms-3">Cerrar sesión</button>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO -->
+    <div class="container mt-5">
+        <h1 class="text-center page-title mb-4">Panel General del Sistema</h1>
+
+        <div class="dashboard-grid">
+
+            <a href="./views/camas/lista.html" class="dash-card">
+                <h2>Camas</h2>
+                <p>Administrar camas disponibles</p>
+            </a>
+
+            <a href="./views/enfermeros/lista.html" class="dash-card">
+                <h2>Enfermeros</h2>
+                <p>Lista, edición y control</p>
+            </a>
+
+            <a href="./views/habitaciones/lista.html" class="dash-card">
+                <h2>Habitaciones</h2>
+                <p>Asignación y gestión completa</p>
+            </a>
+
+            <a href="./views/pacientes/lista.html" class="dash-card">
+                <h2>Pacientes</h2>
+                <p>Registro, consulta y expediente</p>
+            </a>
+
+        </div>
     </div>
+
+    <script src="./js/bootstrap.min.js"></script>
+
+    <script type="module">
+        import { protegerRuta, logout } from "./js/auth.js";
+
+        protegerRuta();
+
+        document.getElementById("logoutBtn").onclick = () => logout();
+
+        history.pushState(null, "", location.href);
+        window.onpopstate = () => history.go(1);
+    </script>
 
 </body>
 </html>

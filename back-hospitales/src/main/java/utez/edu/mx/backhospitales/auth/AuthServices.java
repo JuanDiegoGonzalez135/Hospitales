@@ -35,7 +35,7 @@ public class AuthServices {
                     return new APIResponse(true,"Las contrasenas no coniciden",  HttpStatus.BAD_REQUEST);
 
                 UserDetails ud = udService.loadUserByUsername(found.getCorreo());
-                String token = jwtUtils.generateToken(ud);
+                String token = jwtUtils.generateToken(ud, found.getRole().name());
                 return new APIResponse(token,false,"Operacion exitosa",   HttpStatus.OK);
             } catch (Exception ex) {
                 ex.printStackTrace();

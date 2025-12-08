@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +12,10 @@
     <!-- Estilos propios -->
     <link rel="stylesheet" href="./css/style-login.css">
 </head>
+
 <body>
 
-<div class="login-wrapper">
+    <div class="login-wrapper">
         <div class="login-card shadow-lg">
             <div class="login-header text-center mb-4">
                 <h2 class="title">Bienvenido</h2>
@@ -25,12 +27,14 @@
             <form id="formLogin">
                 <div class="form-group mb-3">
                     <label class="form-label">Correo electrónico</label>
-                    <input id="correo" type="email" class="form-control input-soft" placeholder="correo@email.com" required>
+                    <input id="correo" type="email" class="form-control input-soft" placeholder="correo@email.com"
+                        required>
                 </div>
 
                 <div class="form-group mb-4">
                     <label class="form-label">Contraseña</label>
-                    <input id="password" type="password" class="form-control input-soft" placeholder="••••••••" required>
+                    <input id="password" type="password" class="form-control input-soft" placeholder="••••••••"
+                        required>
                 </div>
 
                 <button type="submit" class="btn btn-login w-100" id="btnSubmit">
@@ -41,26 +45,35 @@
         </div>
     </div>
 
-    <!-- Bootstrap -->
-    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
 
-    <!-- Script de Login -->
-    <script>
-        document.getElementById("formLogin").addEventListener("submit", function(e) {
+    <script type="module">
+        import { AuthAPI } from "./js/api.js";
+
+        document.getElementById("formLogin").addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const correo = document.getElementById("correo").value;
-            const pass = document.getElementById("password").value;
+            const password = document.getElementById("password").value;
 
-            // 🔹 Aquí puedes validar contra tu API o lo que uses
-            // Por ahora pondré un login de ejemplo:
-            if (correo === "admin@utez.com" && pass === "admin") {
+            try {
+                const resp = await AuthAPI.login(correo, password);
+
+                if (resp.error) {
+                    alert(resp.message || "Credenciales incorrectas");
+                    return;
+                }
+
+                localStorage.setItem("token", resp.data);
                 window.location.href = "./dashboard.html";
-            } else {
-                alert("Correo o contraseña incorrectos");
+
+            } catch (err) {
+                console.error(err);
+                alert("Error al conectar con el servidor");
             }
         });
     </script>
 
 </body>
+
 </html>
