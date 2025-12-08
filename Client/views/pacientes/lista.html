@@ -1,28 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
-    <nav aria-label="breadcrumb" style="margin-bottom: 1rem;">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="../../dashboard.html">Inicio</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Pacientes</li>
-        </ol>
-    </nav>
 
 <head>
     <meta charset="UTF-8">
     <title>Pacientes</title>
 
-    <!-- Estilos -->
-
-    <link rel="stylesheet" href="../../css/style-forms.css">
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style-forms.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
 
-    <!-- Scripts -->
     <script type="module" src="../../js/api.js"></script>
     <script type="module" src="../../js/pacientes.js"></script>
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
+        <div class="container-fluid">
 
+            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="../camas/lista.html">Camas</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="../enfermeros/lista.html">Enfermeros</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="../habitaciones/lista.html">Habitaciones</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pacientes/lista.html">Pacientes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <button id="logoutBtn" class="btn btn-danger ms-3">Cerrar sesión</button>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
     <h1 class="page-title">Lista de Pacientes</h1>
 
     <div class="table-container">
@@ -50,7 +78,12 @@
 
     </div>
     <script src="../../js/bootstrap.min.js"></script>
-
+    <script type="module">
+        import { logout } from "../../js/auth.js";
+        document.getElementById("logoutBtn").onclick = () => logout();
+        history.pushState(null, "", location.href);
+        window.onpopstate = () => history.go(1);
+    </script>
 </body>
 
 </html>

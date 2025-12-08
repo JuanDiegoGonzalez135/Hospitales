@@ -79,7 +79,20 @@ public class JWTUtils {
         );
         return createToken(claims, userDetails.getUsername());
     }
+    // =============================
+    // 2) Token desde BeanUser (ROL REAL)
+    // =============================
+    public String generateToken(UserDetails userDetails, String role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);  // <=== Aquí el rol real del enum
+        return createToken(claims, userDetails.getUsername());
+    }
 
+    // =============================
+    // Extraer solo el rol del token
+    // =============================
+    public String extractRole(String token) {
+        return extractClaims(token, claims -> claims.get("role").toString());
+    }
     //Con esto terminamos de armar el jwtutils
-
 }
