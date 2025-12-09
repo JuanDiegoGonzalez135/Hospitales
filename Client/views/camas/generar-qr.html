@@ -50,52 +50,38 @@
             </div>
         </div>
     </nav>
-    <div class="page-container">
-        <div class="container mt-5">
-            <h1 class="page-title">Código QR de la Cama</h1>
-    <div class="card-glass" style="text-align: center;">
-
-        <p style="margin-bottom: 15px; font-weight: 500;">
-            Escanea este QR para ver la información de la cama
-        </p>
-
-        <!-- QR -->
-        <canvas id="qrCanvas" style="margin: 20px auto; display: block;"></canvas>
-
-        <!-- Estado de la cama -->
-        <h3 id="estadoCama" style="margin-top: 10px; color:#1a3c7e;"></h3>
-
-        <!-- Descargar -->
-        <button id="btnDescargarQR" class="btn-main" style="margin-top: 15px;">
-            Descargar QR
-        </button>
-
-        <button onclick="window.location.href='lista.html'" class="btn-back">
-            Volver
-        </button>
-
-    </div>
-
-    <script src="../../js/bootstrap.min.js"></script>
 
     <div class="page-container">
         <div class="container mt-5">
+
             <h1 class="page-title">Código QR de la Cama</h1>
+
             <div class="card-glass" style="text-align: center;">
+
                 <p style="margin-bottom: 15px; font-weight: 500;">
-                    Escanea este QR para ver la información del paciente
+                    Escanea este QR para ver la información de la cama
                 </p>
+
+                <!-- QR -->
                 <canvas id="qrCanvas" style="margin: 20px auto; display: block;"></canvas>
-                <h3 id="pacienteNombre" style="margin-top: 10px; color:#1a3c7e;"></h3>
+
+                <!-- Estado -->
+                <h3 id="estadoCama" style="margin-top: 10px; color:#1a3c7e;"></h3>
+
+                <!-- Descargar -->
                 <button id="btnDescargarQR" class="btn-main" style="margin-top: 15px;">
                     Descargar QR
                 </button>
+
+                <!-- Regresar -->
                 <button onclick="window.location.href='lista.html'" class="btn-back">
                     Volver
                 </button>
+
             </div>
         </div>
     </div>
+
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { protegerRuta, logout } from "../../js/auth.js";
