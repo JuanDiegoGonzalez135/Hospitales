@@ -49,36 +49,34 @@
             </div>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Habitaciones</h1>
-
-    <div class="table-container">
-
-        <div style="text-align: right; margin-bottom: 15px;">
-            <a href="crear.html">
-                <button class="btn-main" style="max-width: 200px;">Registrar Habitación</button>
-            </a>
+    <div class="page-container">
+        <div class="container mt-5">
+            <h1 class="page-title">Habitaciones</h1>
+            <div class="table-container">
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <a href="crear.html">
+                        <button class="btn-main" style="max-width: 200px;">Registrar Habitación</button>
+                    </a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Camas</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaHabitaciones"></tbody>
+                </table>
+            </div>
         </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Camas</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-
-            <tbody id="tablaHabitaciones"></tbody>
-        </table>
-
     </div>
-
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { logout } from "../../js/auth.js";
-        document.getElementById("logoutBtn").onclick = () => logout();
+        import { protegerRuta, logout } from "../../js/auth.js";
+        protegerRuta();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>

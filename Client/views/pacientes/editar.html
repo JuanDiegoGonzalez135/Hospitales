@@ -50,42 +50,42 @@
             </div>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Editar Paciente</h1>
+    <div class="page-container">
+        <div class="container mt-5">
+            <h1 class="page-title">Editar Paciente</h1>
+            <div class="card-glass">
+                <form id="formEditarPaciente">
 
-    <div class="card-glass">
+                    <label>Nombre:</label>
+                    <input type="text" id="nombre" class="form-control" required>
 
-        <form id="formEditarPaciente">
+                    <label>Apellido:</label>
+                    <input type="text" id="apellido" class="form-control" required>
 
-            <label>Nombre:</label>
-            <input type="text" id="nombre" class="form-control" required>
+                    <label>Edad:</label>
+                    <input type="number" id="edad" class="form-control" required>
 
-            <label>Apellido:</label>
-            <input type="text" id="apellido" class="form-control" required>
+                    <label>Teléfono:</label>
+                    <input type="text" id="telefono" class="form-control" required>
 
-            <label>Edad:</label>
-            <input type="number" id="edad" class="form-control" required>
+                    <label>Correo:</label>
+                    <input type="email" id="correo" class="form-control" required>
 
-            <label>Teléfono:</label>
-            <input type="text" id="telefono" class="form-control" required>
+                    <label>Diagnóstico:</label>
+                    <textarea id="diagnostico" rows="4" class="form-control"></textarea>
 
-            <label>Correo:</label>
-            <input type="email" id="correo" class="form-control" required>
+                    <button type="submit" class="btn-main">Actualizar</button>
+                </form>
 
-            <label>Diagnóstico:</label>
-            <textarea id="diagnostico" rows="4" class="form-control"></textarea>
-
-            <button type="submit" class="btn-main">Actualizar</button>
-        </form>
-
-        <a href="./lista.html" class="link-back">Volver</a>
-
+                <a href="./lista.html" class="link-back">Volver</a>
+            </div>
+        </div>
     </div>
-
-    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { logout } from "../../js/auth.js";
-        document.getElementById("logoutBtn").onclick = () => logout();
+        import { protegerRuta, logout } from "../../js/auth.js";
+        protegerRuta();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>

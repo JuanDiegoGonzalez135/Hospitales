@@ -14,7 +14,7 @@ public class Habitacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false,unique = true)
     public String nombre;
 
     @JsonIgnore

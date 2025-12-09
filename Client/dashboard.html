@@ -6,8 +6,8 @@
     <title>Dashboard</title>
 
     <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/dashboard.css">
-    
+    <link rel="stylesheet" href="./css/navbar.css">
+
 </head>
 
 <body>
@@ -16,8 +16,7 @@
 
             <a class="navbar-brand brand-glow" href="#">Hospital System</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navContent">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -78,18 +77,16 @@
         </div>
     </div>
 
-    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
 
     <script type="module">
         import { protegerRuta, logout } from "./js/auth.js";
-
         protegerRuta();
-
-        document.getElementById("logoutBtn").onclick = () => logout();
-
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
 
 </body>
+
 </html>
