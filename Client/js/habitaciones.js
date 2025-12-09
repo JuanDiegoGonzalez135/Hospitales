@@ -16,8 +16,8 @@ async function cargarHabitaciones() {
             <td>${h.id}</td>
             <td>${h.nombre}</td>
             <td>
-                <a href="editar.html?id=${h.id}">Editar</a>
-                <button onclick="eliminarHabitacion(${h.id})">Eliminar</button>
+                <a class="btn btn-warning btn-sm me-2" href="editar.html?id=${h.id}">Editar</a>
+                <button class="btn btn-danger btn-sm" onclick="eliminarHabitacion(${h.id})">Eliminar</button>
             </td>
         `;
 
@@ -31,7 +31,7 @@ if (document.getElementById("formCrearHabitacion")) {
         e.preventDefault();
 
         const data = {
-            nombre: document.getElementById("nombre").value,
+            nombre: document.getElementById("nombre").value.trim(),
         };
 
         await IslaAPI.createHabitacion(data);
@@ -56,7 +56,7 @@ async function cargarHabitacionEditar() {
         e.preventDefault();
 
         const data = {
-            nombre: document.getElementById("nombre").value,
+            nombre: document.getElementById("nombre").value.trim(),
         };
 
         await IslaAPI.updateHabitacion(id, data);

@@ -50,37 +50,38 @@
             </div>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Lista de Pacientes</h1>
+    <div class="page-container">
+        <div class="container mt-5">
+            <h1 class="page-title">Lista de Pacientes</h1>
+            <div class="table-container">
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <a href="crear.html">
+                        <button class="btn-main" style="max-width: 200px;">Registrar Paciente</button>
+                    </a>
+                </div>
 
-    <div class="table-container">
-
-        <div style="text-align: right; margin-bottom: 15px;">
-            <a href="crear.html">
-                <button class="btn-main" style="max-width: 200px;">Registrar Paciente</button>
-            </a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Edad</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Diagnóstico</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaPacientes"></tbody>
+                </table>
+            </div>
         </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Edad</th>
-                    <th>Teléfono</th>
-                    <th>Correo</th>
-                    <th>Diagnóstico</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="tablaPacientes"></tbody>
-        </table>
-
     </div>
-    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { logout } from "../../js/auth.js";
-        document.getElementById("logoutBtn").onclick = () => logout();
+        import { protegerRuta, logout } from "../../js/auth.js";
+        protegerRuta();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>

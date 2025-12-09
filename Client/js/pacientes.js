@@ -20,8 +20,8 @@ async function cargarPacientes() {
             <td>${p.correo}</td>
             <td>${p.diagnostico}</td>
             <td>
-                <a href="editar.html?id=${p.id}">Editar</a>
-                <button onclick="eliminarPaciente(${p.id})">Eliminar</button>
+                <a class="btn btn-warning btn-sm me-2" href="editar.html?id=${p.id}">Editar</a>
+                <button class="btn btn-danger btn-sm" onclick="eliminarPaciente(${p.id})">Eliminar</button>
             </td>
         `;
 
@@ -35,12 +35,12 @@ if (document.getElementById("formCrearPaciente")) {
         e.preventDefault();
 
         const data = {
-            nombre: document.getElementById("nombre").value,
-            apellido: document.getElementById("apellido").value,
+            nombre: document.getElementById("nombre").value.trim(),
+            apellido: document.getElementById("apellido").value.trim(),
             edad: parseInt(document.getElementById("edad").value),
-            telefono: document.getElementById("telefono").value,
-            correo: document.getElementById("correo").value,
-            diagnostico: document.getElementById("diagnostico").value
+            telefono: document.getElementById("telefono").value.trim(),
+            correo: document.getElementById("correo").value.trim(),
+            diagnostico: document.getElementById("diagnostico").value.trim()
         };
 
         await IslaAPI.createPaciente(data);
@@ -56,10 +56,9 @@ async function cargarPacienteEditar() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
-    const respuesta = await IslaAPI.getPaciente(id);
-    console.log(respuesta);
+    const resp = await IslaAPI.getPaciente(id);
+    const p = resp?.data;
 
-    const p = respuesta?.data;
     if (!p) {
         alert("Error al cargar el paciente");
         return;
@@ -76,12 +75,12 @@ async function cargarPacienteEditar() {
         e.preventDefault();
 
         const data = {
-            nombre: document.getElementById("nombre").value,
-            apellido: document.getElementById("apellido").value,
+            nombre: document.getElementById("nombre").value.trim(),
+            apellido: document.getElementById("apellido").value.trim(),
             edad: parseInt(document.getElementById("edad").value),
-            telefono: document.getElementById("telefono").value,
-            correo: document.getElementById("correo").value,
-            diagnostico: document.getElementById("diagnostico").value
+            telefono: document.getElementById("telefono").value.trim(),
+            correo: document.getElementById("correo").value.trim(),
+            diagnostico: document.getElementById("diagnostico").value.trim()
         };
 
         await IslaAPI.updatePaciente(id, data);
@@ -90,11 +89,6 @@ async function cargarPacienteEditar() {
     });
 }
 
-
-
-// ==============================================
-//  ELIMINAR PACIENTE
-// ==============================================
 async function eliminarPaciente(id) {
     if (!confirm("¿Seguro que deseas eliminar este paciente?")) return;
 
@@ -103,13 +97,7 @@ async function eliminarPaciente(id) {
     location.reload();
 }
 
-
-
-// ==============================================
-//  Ejecutar las funciones según la vista
-// ==============================================
 cargarPacientes();
 cargarPacienteEditar();
 
-// Necesario para que eliminarPaciente sea visible en el HTML
 window.eliminarPaciente = eliminarPaciente;

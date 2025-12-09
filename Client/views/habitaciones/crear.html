@@ -51,29 +51,27 @@
             </div>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Crear Habitación</h1>
-
-    <div class="card-glass">
-
-        <form id="formCrearHabitacion">
-
-            <label for="nombre">Nombre de la Habitación</label>
-            <input class="form-control mb-3" type="text" id="nombre" required>
-
-            <button class="btn-main" type="submit">Guardar</button>
-        </form>
-
-        <a href="./lista.html">
-            <button class="btn-back">Volver</button>
-        </a>
-
+    <div class="page-container">
+        <div class="container mt-5">
+            <h1 class="page-title">Crear Habitación</h1>
+            <div class="card-glass">
+                <form id="formCrearHabitacion">
+                    <label for="nombre">Nombre de la Habitación</label>
+                    <input class="form-control mb-3" type="text" id="nombre" required>
+                    <button class="btn-main" type="submit">Guardar</button>
+                </form>
+                <a href="./lista.html">
+                    <button class="btn-back">Volver</button>
+                </a>
+            </div>
+        </div>
     </div>
     <script type="module" src="../../js/habitaciones.js"></script>
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { logout } from "../../js/auth.js";
-        document.getElementById("logoutBtn").onclick = () => logout();
+        import { protegerRuta, logout } from "../../js/auth.js";
+        protegerRuta();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>

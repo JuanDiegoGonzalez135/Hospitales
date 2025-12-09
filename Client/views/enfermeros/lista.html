@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../../css/navbar.css">
 
     <script type="module" src="../../js/enfermeros.js"></script>
-    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -48,39 +48,40 @@
             </div>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Lista de Enfermeros</h1>
+    <div class="page-container">
+        <div class="container mt-5">
+            <h1 class="page-title">Lista de Enfermeros</h1>
+            <div class="table-container">
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <a href="crear.html">
+                        <button class="btn-main" style="max-width: 200px;">Registrar Enfermero</button>
+                    </a>
+                </div>
 
-    <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
 
-        <div style="text-align: right; margin-bottom: 15px;">
-            <a href="crear.html">
-                <button class="btn-main" style="max-width: 200px;">Registrar Enfermero</button>
-            </a>
+                    <tbody id="tablaEnfermeros"></tbody>
+                </table>
+            </div>
         </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Teléfono</th>
-                    <th>Correo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-
-            <tbody id="tablaEnfermeros"></tbody>
-
-        </table>
-        <script type="module">
-            import { logout } from "../../js/auth.js";
-            document.getElementById("logoutBtn").onclick = () => logout();
-            history.pushState(null, "", location.href);
-            window.onpopstate = () => history.go(1);
-        </script>
     </div>
+    <script type="module">
+        import { protegerRuta, logout } from "../../js/auth.js";
+        protegerRuta();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
+        history.pushState(null, "", location.href);
+        window.onpopstate = () => history.go(1);
+    </script>
 </body>
 
 </html>

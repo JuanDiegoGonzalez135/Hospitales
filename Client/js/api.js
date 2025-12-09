@@ -1,6 +1,6 @@
 // /front/js/api/Api.js
 
-const API_BASE = "http://localhost:8080/api/hospitales";
+const API_BASE = "http://localhost:8081/api/hospitales";
 
 async function request(url, method = "GET", body = null) {
     const options = {
@@ -190,7 +190,7 @@ export const EnfermeroAPI = {
 
 export const AuthAPI = {
     login(correo, password) {
-        return request("http://localhost:8080/api/auth", "POST", {
+        return request("http://localhost:8081/api/auth", "POST", {
             correo,
             password
         });

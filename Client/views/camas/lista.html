@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Camas</title>
-
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/style-forms.css">
     <link rel="stylesheet" href="../../css/navbar.css">
@@ -50,39 +49,42 @@
             </div>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Lista de Camas</h1>
+    <div class="page-container">
+        <div class="container mt-5">
+            <h1 class="text-center page-title mb-4">Lista de Camas</h1>
+            <div class="table-container">
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <a href="crear.html">
+                        <button class="btn-main" style="max-width: 200px;">Registrar Cama</button>
+                    </a>
+                </div>
 
-    <div class="table-container">
-
-        <div style="text-align: right; margin-bottom: 15px;">
-            <a href="crear.html">
-                <button class="btn-main" style="max-width: 200px;">Registrar Cama</button>
-            </a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Código</th>
+                            <th>Número</th>
+                            <th>Habitación</th>
+                            <th>Paciente</th>
+                            <th style="width: 150px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaCamas"></tbody>
+                </table>
+            </div>
         </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Código</th>
-                    <th>Número</th>
-                    <th>Habitación</th>
-                    <th>Paciente</th>
-                    <th style="width: 150px;">Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="tablaCamas"></tbody>
-        </table>
     </div>
     <script src="../../js/bootstrap.bundle.min.js"></script>
 
     <script type="module">
-        import {logout } from "../../js/auth.js";
-        document.getElementById("logoutBtn").onclick = () => logout();
+        import { protegerRuta, logout } from "../../js/auth.js";
+        protegerRuta();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
+
 </body>
 
 </html>

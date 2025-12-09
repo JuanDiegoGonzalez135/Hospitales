@@ -49,44 +49,42 @@
             </div>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Registrar Paciente</h1>
+    <div class="page-container">
+        <div class="container mt-5">
+            <h1 class="page-title">Registrar Paciente</h1>
+            <div class="card-glass">
+                <form id="formCrearPaciente">
+                    <label>Nombre:</label>
+                    <input class="form-control" type="text" id="nombre" required>
 
-    <div class="card-glass">
+                    <label>Apellido:</label>
+                    <input class="form-control" type="text" id="apellido" required>
 
-        <form id="formCrearPaciente">
+                    <label>Edad:</label>
+                    <input class="form-control" type="number" id="edad" required>
 
-            <label>Nombre:</label>
-            <input class="form-control" type="text" id="nombre" required>
+                    <label>Teléfono:</label>
+                    <input class="form-control" type="text" id="telefono" required>
 
-            <label>Apellido:</label>
-            <input class="form-control" type="text" id="apellido" required>
+                    <label>Correo:</label>
+                    <input class="form-control" type="email" id="correo" required>
 
-            <label>Edad:</label>
-            <input class="form-control" type="number" id="edad" required>
+                    <label>Diagnóstico:</label>
+                    <textarea class="form-control" id="diagnostico" rows="4"></textarea>
 
-            <label>Teléfono:</label>
-            <input class="form-control" type="text" id="telefono" required>
-
-            <label>Correo:</label>
-            <input class="form-control" type="email" id="correo" required>
-
-            <label>Diagnóstico:</label>
-            <textarea class="form-control" id="diagnostico" rows="4"></textarea>
-
-            <button class="btn-main" type="submit">Guardar</button>
-        </form>
-
-        <a href="./lista.html">
-            <button class="btn-back">Volver</button>
-        </a>
-
+                    <button class="btn-main" type="submit">Guardar</button>
+                </form>
+                <a href="./lista.html">
+                    <button class="btn-back">Volver</button>
+                </a>
+            </div>
+        </div>
     </div>
-
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { logout } from "../../js/auth.js";
-        document.getElementById("logoutBtn").onclick = () => logout();
+        import { protegerRuta, logout } from "../../js/auth.js";
+        protegerRuta();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
