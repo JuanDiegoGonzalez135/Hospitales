@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Código QR del Paciente</title>
+    <title>Código QR de la Cama</title>
 
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/style-forms.css">
     <link rel="stylesheet" href="../../css/navbar.css">
 
     <script type="module" src="../../js/api.js"></script>
-    <script type="module" src="../../js/pacientes-qr.js"></script>
+    <script type="module" src="../../js/camas-qr.js"></script>
 </head>
 
 <body>
@@ -50,39 +50,42 @@
             </div>
         </div>
     </nav>
+
     <br>
     <h1 class="page-title">Código QR de la Cama</h1>
 
     <div class="card-glass" style="text-align: center;">
 
         <p style="margin-bottom: 15px; font-weight: 500;">
-            Escanea este QR para ver la información del paciente
+            Escanea este QR para ver la información de la cama
         </p>
 
-        <!-- CONTENEDOR DEL QR -->
+        <!-- QR -->
         <canvas id="qrCanvas" style="margin: 20px auto; display: block;"></canvas>
 
-        <!-- Nombre del paciente debajo -->
-        <h3 id="pacienteNombre" style="margin-top: 10px; color:#1a3c7e;"></h3>
+        <!-- Estado de la cama -->
+        <h3 id="estadoCama" style="margin-top: 10px; color:#1a3c7e;"></h3>
 
-        <!-- Botón para descargar -->
+        <!-- Descargar -->
         <button id="btnDescargarQR" class="btn-main" style="margin-top: 15px;">
             Descargar QR
         </button>
 
-        <!-- Botón regresar -->
         <button onclick="window.location.href='lista.html'" class="btn-back">
             Volver
         </button>
 
     </div>
+
     <script src="../../js/bootstrap.min.js"></script>
+
     <script type="module">
         import { logout } from "../../js/auth.js";
         document.getElementById("logoutBtn").onclick = () => logout();
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
+
 </body>
 
 </html>

@@ -15,7 +15,6 @@ async function cargarHabitaciones() {
         tr.innerHTML = `
             <td>${h.id}</td>
             <td>${h.nombre}</td>
-            <td>${h.camas ? h.camas.length : 0}</td>
             <td>
                 <a href="editar.html?id=${h.id}">Editar</a>
                 <button onclick="eliminarHabitacion(${h.id})">Eliminar</button>
