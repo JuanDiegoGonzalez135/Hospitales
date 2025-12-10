@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
 
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/dashboard.css">
-    
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
+
 </head>
 
 <body>
@@ -16,8 +16,7 @@
 
             <a class="navbar-brand brand-glow" href="#">Hospital System</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navContent">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -55,22 +54,22 @@
 
         <div class="dashboard-grid">
 
-            <a href="./views/camas/lista.html" class="dash-card">
+            <a href="../admin/camas/lista.html" class="dash-card">
                 <h2>Camas</h2>
                 <p>Administrar camas disponibles</p>
             </a>
 
-            <a href="./views/enfermeros/lista.html" class="dash-card">
+            <a href="../admin/enfermeros/lista.html" class="dash-card">
                 <h2>Enfermeros</h2>
                 <p>Lista, edición y control</p>
             </a>
 
-            <a href="./views/habitaciones/lista.html" class="dash-card">
+            <a href="../admin/habitaciones/lista.html" class="dash-card">
                 <h2>Habitaciones</h2>
                 <p>Asignación y gestión completa</p>
             </a>
 
-            <a href="./views/pacientes/lista.html" class="dash-card">
+            <a href="../admin/pacientes/lista.html" class="dash-card">
                 <h2>Pacientes</h2>
                 <p>Registro, consulta y expediente</p>
             </a>
@@ -78,18 +77,20 @@
         </div>
     </div>
 
-    <script src="./js/bootstrap.min.js"></script>
+    <script src="../../js/bootstrap.bundle.min.js"></script>
 
     <script type="module">
-        import { protegerRuta, logout } from "./js/auth.js";
+        import { protegerRuta, logout, aplicarVistaPorRol } from "../../js/auth.js";
 
         protegerRuta();
-
-        document.getElementById("logoutBtn").onclick = () => logout();
+        aplicarVistaPorRol();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
 
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
 
+
 </body>
+
 </html>

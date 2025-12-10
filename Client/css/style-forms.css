@@ -11,7 +11,11 @@
 /* Fondo aesthetic */
 body {
     background: linear-gradient(135deg, #ffffff 0%, #eef4ff 40%, #d7e4ff 100%);
-    min-block-size: 100vh;
+    min-height: 100vh;
+}
+
+/* Contenedor general para páginas con formularios o tablas */
+.page-container {
     padding: 25px;
 }
 

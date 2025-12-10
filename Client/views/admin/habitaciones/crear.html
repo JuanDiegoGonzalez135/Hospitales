@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Habitación</title>
+    <title>Crear Habitación</title>
 
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style-forms.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
-
-    <script type="module" src="../../js/habitaciones.js"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <script type="module" src="../../../js/habitaciones.js"></script>
 
 </head>
 
@@ -19,7 +18,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
 
-            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
@@ -52,26 +51,27 @@
             </div>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Editar Habitación</h1>
-
-    <div class="card-glass">
-
-        <form id="formEditarHabitacion" class="mb-3">
-            <label for="nombre">Nombre de la Habitación</label>
-            <input class="form-control" type="text" id="nombre" required>
-            <button class="btn-main" type="submit">Actualizar</button>
-        </form>
-
-        <a href="./lista.html">
-            <button class="btn-back">Volver</button>
-        </a>
-
+    <div class="page-container">
+        <div class="container mt-5">
+            <h1 class="page-title">Crear Habitación</h1>
+            <div class="card-glass">
+                <form id="formCrearHabitacion">
+                    <label for="nombre">Nombre de la Habitación</label>
+                    <input class="form-control mb-3" type="text" id="nombre" required>
+                    <button class="btn-main" type="submit">Guardar</button>
+                </form>
+                <a href="./lista.html">
+                    <button class="btn-back">Volver</button>
+                </a>
+            </div>
+        </div>
     </div>
-    <script src="../../js/bootstrap.min.js"></script>
+    <script type="module" src="../../../js/habitaciones.js"></script>
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { logout } from "../../js/auth.js";
-        document.getElementById("logoutBtn").onclick = () => logout();
+        import { protegerRuta, logout } from "../../../js/auth.js";
+        protegerRuta();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>

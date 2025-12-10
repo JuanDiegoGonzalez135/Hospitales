@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Enfermero</title>
+
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
+        <div class="container-fluid">
+
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="../camas/lista.html">Camas</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="../enfermeros/lista.html">Enfermeros</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="../habitaciones/lista.html">Habitaciones</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pacientes/lista.html">Pacientes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <button id="logoutBtn" class="btn btn-danger ms-3">Cerrar sesión</button>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="page-container">
+        <div class="container mt-5">
+            <h1 class="page-title">Registrar Enfermero</h1>
+            <div class="card-glass">
+                <form id="formCrearEnfermero">
+                    <label>Nombre:</label>
+                    <input id="nombre" class="form-control" required>
+                    <label>Apellido:</label>
+                    <input id="apellido" class="form-control" required>
+                    <label>Teléfono:</label>
+                    <input id="telefono" class="form-control" required>
+                    <label>Correo:</label>
+                    <input id="correo" class="form-control" required>
+                    <label>Contraseña:</label>
+                    <input id="password" type="password" class="form-control" required>
+                    <button class="btn-main" type="submit">Guardar</button>
+                </form>
+                <button type="button" class="btn-back" onclick="window.location.href='./lista.html'">
+                    Volver a la Lista
+                </button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../../../js/enfermeros.js"></script>
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { protegerRuta, logout } from "../../../js/auth.js";
+        protegerRuta();
+        document.getElementById("logoutBtn")?.addEventListener("click", logout);
+        history.pushState(null, "", location.href);
+        window.onpopstate = () => history.go(1);
+    </script>
+</body>
+
+</html>

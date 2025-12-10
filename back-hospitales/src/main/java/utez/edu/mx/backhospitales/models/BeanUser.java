@@ -1,6 +1,7 @@
 package utez.edu.mx.backhospitales.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
 @Table (name = "user")
 @Entity
@@ -8,10 +9,14 @@ public class BeanUser {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false,unique = true)
     private int id;
 
-    @Column (name = "correo", nullable = false)
+    @Pattern(
+            regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$",
+            message = "El correo no cumple con el formato válido"
+    )
+    @Column(name = "correo", nullable = false, unique = true)
     private String correo;
 
     @Column(name = "password", nullable = false)

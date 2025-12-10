@@ -1,6 +1,8 @@
 package utez.edu.mx.backhospitales.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,19 +13,23 @@ public class Enfermero {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false)
     public String nombre;
 
-    @Column(name = "apellido")
+    @Column(name = "apellido", nullable = false)
     public String apellido;
 
-    @Column(name = "telefono")
+    @Column(name = "telefono", unique = true, nullable = false)
     public String telefono;
 
-    @Column(name = "correo")
+    @Pattern(
+            regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$",
+            message = "El correo no cumple con el formato válido"
+    )
+    @Column(name = "correo",unique = true, nullable = false)
     public String correo;
 
-    @Column(name = "password_temporal")
+    @Column(name = "password_temporal", nullable = true)
     @Transient
     private String passwordTemporal;
 
