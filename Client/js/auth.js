@@ -33,7 +33,7 @@ export function protegerRuta() {
     const token = getToken();
 
     if (!token) {
-        window.location.href = "/index.html";
+        window.location.href = "../../index.html";
         return;
     }
 
@@ -68,5 +68,5 @@ export function aplicarVistaPorRol() {
 // 6) Cerrar sesión
 export function logout() {
     localStorage.removeItem("token");
-    window.location.href = "/index.html";
+    window.location.href = "../../index.html";
 }
