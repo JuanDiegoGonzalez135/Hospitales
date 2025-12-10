@@ -3,19 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Enfermero</title>
+    <title>Editar Paciente</title>
 
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style-forms.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+
+    <script type="module" src="../../../js/api.js"></script>
+    <script type="module" src="../../../js/pacientes.js"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
 
-            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
@@ -50,31 +52,38 @@
     </nav>
     <div class="page-container">
         <div class="container mt-5">
-            <h1 class="page-title">Registrar Enfermero</h1>
+            <h1 class="page-title">Editar Paciente</h1>
             <div class="card-glass">
-                <form id="formCrearEnfermero">
+                <form id="formEditarPaciente">
+
                     <label>Nombre:</label>
-                    <input id="nombre" class="form-control" required>
+                    <input type="text" id="nombre" class="form-control" required>
+
                     <label>Apellido:</label>
-                    <input id="apellido" class="form-control" required>
+                    <input type="text" id="apellido" class="form-control" required>
+
+                    <label>Edad:</label>
+                    <input type="number" id="edad" class="form-control" required>
+
                     <label>Teléfono:</label>
-                    <input id="telefono" class="form-control" required>
+                    <input type="text" id="telefono" class="form-control" required>
+
                     <label>Correo:</label>
-                    <input id="correo" class="form-control" required>
-                    <label>Contraseña:</label>
-                    <input id="password" type="password" class="form-control" required>
-                    <button class="btn-main" type="submit">Guardar</button>
+                    <input type="email" id="correo" class="form-control" required>
+
+                    <label>Diagnóstico:</label>
+                    <textarea id="diagnostico" rows="4" class="form-control"></textarea>
+
+                    <button type="submit" class="btn-main">Actualizar</button>
                 </form>
-                <button type="button" class="btn-back" onclick="window.location.href='./lista.html'">
-                    Volver a la Lista
-                </button>
+
+                <a href="./lista.html" class="link-back">Volver</a>
             </div>
         </div>
     </div>
-    <script type="module" src="../../js/enfermeros.js"></script>
-    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { protegerRuta, logout } from "../../js/auth.js";
+        import { protegerRuta, logout } from "../../../js/auth.js";
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);

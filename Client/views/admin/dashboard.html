@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
 
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/navbar.css">
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
 
 </head>
 
@@ -54,22 +54,22 @@
 
         <div class="dashboard-grid">
 
-            <a href="./views/camas/lista.html" class="dash-card">
+            <a href="../admin/camas/lista.html" class="dash-card">
                 <h2>Camas</h2>
                 <p>Administrar camas disponibles</p>
             </a>
 
-            <a href="./views/enfermeros/lista.html" class="dash-card">
+            <a href="../admin/enfermeros/lista.html" class="dash-card">
                 <h2>Enfermeros</h2>
                 <p>Lista, edición y control</p>
             </a>
 
-            <a href="./views/habitaciones/lista.html" class="dash-card">
+            <a href="../admin/habitaciones/lista.html" class="dash-card">
                 <h2>Habitaciones</h2>
                 <p>Asignación y gestión completa</p>
             </a>
 
-            <a href="./views/pacientes/lista.html" class="dash-card">
+            <a href="../admin/pacientes/lista.html" class="dash-card">
                 <h2>Pacientes</h2>
                 <p>Registro, consulta y expediente</p>
             </a>
@@ -77,15 +77,19 @@
         </div>
     </div>
 
-    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/bootstrap.bundle.min.js"></script>
 
     <script type="module">
-        import { protegerRuta, logout } from "./js/auth.js";
+        import { protegerRuta, logout, aplicarVistaPorRol } from "../../js/auth.js";
+
         protegerRuta();
+        aplicarVistaPorRol();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
+
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
+
 
 </body>
 

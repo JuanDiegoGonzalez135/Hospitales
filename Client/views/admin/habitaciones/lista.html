@@ -3,21 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Editar Paciente</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitaciones - Listado</title>
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
 
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style-forms.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
-
-    <script type="module" src="../../js/api.js"></script>
-    <script type="module" src="../../js/pacientes.js"></script>
+    <script type="module" src="../../../js/habitaciones.js"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
 
-            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
@@ -52,38 +51,31 @@
     </nav>
     <div class="page-container">
         <div class="container mt-5">
-            <h1 class="page-title">Editar Paciente</h1>
-            <div class="card-glass">
-                <form id="formEditarPaciente">
+            <h1 class="page-title">Habitaciones</h1>
+            <div class="table-container">
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <a href="crear.html">
+                        <button class="btn-main" style="max-width: 200px;">Registrar Habitación</button>
+                    </a>
+                </div>
+                
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-                    <label>Nombre:</label>
-                    <input type="text" id="nombre" class="form-control" required>
-
-                    <label>Apellido:</label>
-                    <input type="text" id="apellido" class="form-control" required>
-
-                    <label>Edad:</label>
-                    <input type="number" id="edad" class="form-control" required>
-
-                    <label>Teléfono:</label>
-                    <input type="text" id="telefono" class="form-control" required>
-
-                    <label>Correo:</label>
-                    <input type="email" id="correo" class="form-control" required>
-
-                    <label>Diagnóstico:</label>
-                    <textarea id="diagnostico" rows="4" class="form-control"></textarea>
-
-                    <button type="submit" class="btn-main">Actualizar</button>
-                </form>
-
-                <a href="./lista.html" class="link-back">Volver</a>
+            <tbody id="tablaHabitaciones"></tbody>
+        </table>
             </div>
         </div>
     </div>
-    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { protegerRuta, logout } from "../../js/auth.js";
+        import { protegerRuta, logout } from "../../../js/auth.js";
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);

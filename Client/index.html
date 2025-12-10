@@ -24,7 +24,7 @@
 
             <div id="alertError" class="alert alert-danger d-none" role="alert"></div>
 
-            <form id="formLogin">
+            <form id="loginForm">
                 <div class="form-group mb-3">
                     <label class="form-label">Correo electrónico</label>
                     <input id="correo" type="email" class="form-control input-soft" placeholder="correo@email.com"
@@ -47,32 +47,7 @@
 
     <script src="./js/bootstrap.bundle.min.js"></script>
 
-    <script type="module">
-        import { AuthAPI } from "./js/api.js";
-
-        document.getElementById("formLogin").addEventListener("submit", async function (e) {
-            e.preventDefault();
-
-            const correo = document.getElementById("correo").value;
-            const password = document.getElementById("password").value;
-
-            try {
-                const resp = await AuthAPI.login(correo, password);
-
-                if (resp.error) {
-                    alert(resp.message || "Credenciales incorrectas");
-                    return;
-                }
-
-                localStorage.setItem("token", resp.data);
-                window.location.href = "./dashboard.html";
-
-            } catch (err) {
-                console.error(err);
-                alert("Error al conectar con el servidor");
-            }
-        });
-    </script>
+    <script type="module" src="./js/login.js"></script>
 
 </body>
 

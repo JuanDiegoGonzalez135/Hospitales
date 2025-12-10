@@ -3,22 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Editar Cama</title>
+    <title>Registrar Cama</title>
 
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style-forms.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
 
-    <!-- JS -->
-    <script type="module" src="../../js/api.js"></script>
-    <script type="module" src="../../js/camas.js"></script>
+    <script type="module" src="../../../js/api.js"></script>
+    <script type="module" src="../../../js/camas.js"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
 
-            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
@@ -53,11 +52,9 @@
     </nav>
     <div class="page-container">
         <div class="container mt-5">
-            <h1 class="page-title">Editar Cama</h1>
-
+            <h1 class="page-title">Registrar Cama</h1>
             <div class="card-glass">
-                <form id="formEditarCama">
-
+                <form id="formCrearCama">
                     <label class="form-label">Código:</label>
                     <input type="text" id="codigo" class="form-control" required>
 
@@ -67,7 +64,7 @@
                     <label class="form-label mt-3">Habitación:</label>
                     <select id="habitacion" class="form-control" required></select>
 
-                    <button type="submit" class="btn-main mt-4">Actualizar</button>
+                    <button type="submit" class="btn-main mt-4">Guardar</button>
                 </form>
 
                 <div class="mt-1">
@@ -78,15 +75,14 @@
             </div>
         </div>
     </div>
-    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { protegerRuta, logout } from "../../js/auth.js";
+        import { protegerRuta, logout } from "../../../js/auth.js";
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
-
 </body>
 
 </html>
