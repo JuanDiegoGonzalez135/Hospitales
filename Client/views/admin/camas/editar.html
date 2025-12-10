@@ -15,42 +15,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
-        <div class="container-fluid">
-
-            <a class="navbar-brand brand-glow" href="./dashboard.html">Hospital System</a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="./camas/lista.html">Camas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="./enfermeros/lista.html">Enfermeros</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="./habitaciones/lista.html">Habitaciones</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="./pacientes/lista.html">Pacientes</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <button id="logoutBtn" class="btn btn-danger ms-3">Cerrar sesión</button>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar"></div>
+    
     <div class="page-container">
         <div class="container mt-5">
             <h1 class="page-title">Editar Cama</h1>
@@ -81,8 +47,21 @@
     <script src="../../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { protegerRuta, logout } from "../../../js/auth.js";
+
+        // Proteger ruta
         protegerRuta();
-        document.getElementById("logoutBtn")?.addEventListener("click", logout);
+
+        // Cargar navbar
+        fetch("/Client/components/navbar.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("navbar").innerHTML = html;
+
+                // Conectar logout después de que se cargue el navbar
+                document.getElementById("logoutBtn")?.addEventListener("click", logout);
+            });
+
+        // Bloquear retroceso
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>

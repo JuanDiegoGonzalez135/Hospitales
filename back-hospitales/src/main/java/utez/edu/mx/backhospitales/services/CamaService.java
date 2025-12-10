@@ -143,33 +143,86 @@ public class CamaService {
     public APIResponse generarQR(Long camaId){
         try {
             Optional<Cama> opt = camaRepository.findById(camaId);
-            if (opt.isEmpty()){
+            if (opt.isEmpty()) {
                 return new APIResponse(true, "Cama no encontrada", HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            Cama cama = opt.get();
-            // El contenido del QR puede ser por ejemplo: "CAMA:<codigo>"
-            String qrText = "CAMA:" + cama.getCodigo();
 
-            // Generar imagen QR y convertir a Base64
+            Cama cama = opt.get();
+
+            // Construir un JSON con toda la info de la cama
+            Map<String, Object> qrData = new LinkedHashMap<>();
+
+            qrData.put("id", cama.getId());
+            qrData.put("codigo", cama.getCodigo());
+            qrData.put("numero", cama.getNumero());
+
+            Map<String, Object> habitacion = new LinkedHashMap<>();
+            habitacion.put("id", cama.getHabitacion().getId());
+            habitacion.put("nombre", cama.getHabitacion().getNombre());
+            qrData.put("habitacion", habitacion);
+
+            // Estado
+            qrData.put("estado", cama.getPaciente() != null ? "Ocupada" : "Libre");
+
+            // Paciente
+            if (cama.getPaciente() != null) {
+                Paciente p = cama.getPaciente();
+                Map<String, Object> paciente = new LinkedHashMap<>();
+                paciente.put("id", p.getId());
+                paciente.put("nombre", p.getNombre());
+                paciente.put("apellido", p.getApellido());
+                paciente.put("edad", p.getEdad());
+                paciente.put("telefono", p.getTelefono());
+                paciente.put("correo", p.getCorreo());
+                paciente.put("diagnostico", p.getDiagnostico());
+                qrData.put("paciente", paciente);
+            } else {
+                qrData.put("paciente", null);
+            }
+
+            // Enfermeros
+            List<Map<String, Object>> enfermerosList = new ArrayList<>();
+            for (Enfermero e : cama.getEnfermeros()) {
+                Map<String, Object> enf = new LinkedHashMap<>();
+                enf.put("id", e.getId());
+                enf.put("nombre", e.getNombre());
+                enf.put("apellido", e.getApellido());
+                enf.put("telefono", e.getTelefono());
+                enfermerosList.add(enf);
+            }
+            qrData.put("enfermeros", enfermerosList);
+
+            // Convertir JSON a String
+            String qrText = new com.fasterxml.jackson.databind.ObjectMapper()
+                    .writeValueAsString(qrData);
+
+            // Generar la imagen del QR
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            int size = 300;
+            int size = 400;
 
             Map<EncodeHintType, Object> hints = new HashMap<>();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-            BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, size, size, hints);
+
+            BitMatrix bitMatrix = new MultiFormatWriter()
+                    .encode(qrText, BarcodeFormat.QR_CODE, size, size, hints);
+
             MatrixToImageWriter.writeToStream(bitMatrix, "PNG", baos);
             byte[] bytes = baos.toByteArray();
-            String base64 = java.util.Base64.getEncoder().encodeToString(bytes);
+            String base64 = Base64.getEncoder().encodeToString(bytes);
+
             Map<String, Object> resp = new HashMap<>();
             resp.put("base64", base64);
             resp.put("mime", "image/png");
             resp.put("contenido", qrText);
+
             return new APIResponse(resp, false, "QR generado", HttpStatus.OK);
-        } catch (Exception ex){
+
+        } catch (Exception ex) {
             ex.printStackTrace();
-            return new APIResponse(true, "Error generando QR (asegure dependencia ZXing)", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new APIResponse(true, "Error generando QR", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public APIResponse revocarDispositivoPaciente(Long camaId){
         try {
