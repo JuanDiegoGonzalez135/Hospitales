@@ -69,6 +69,7 @@ public class PacienteService {
             Map<String,Object> r = new HashMap<>();
             r.put("cama", cama.getCodigo());
             r.put("pacienteId", paciente.getId());
+            r.put("camaId", cama.getId());
             r.put("mensaje", "Vinculado correctamente");
             return new APIResponse(r, false, "Vinculado", HttpStatus.OK);
         } catch (Exception ex){

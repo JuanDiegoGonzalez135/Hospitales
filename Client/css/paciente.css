@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+/* ==== FONDO GENERAL ==== */
+body {
+    background: linear-gradient(
+        135deg,
+        #ffffff 0%,
+        #f0f7ff 35%,
+        #dbe9ff 100%
+    );
+    min-height: 100vh;
+}
+
+/* ==== CONTENEDOR PRINCIPAL ==== */
+.container {
+    max-width: 480px;
+}
+
+/* ==== HEADER ==== */
+header h1 {
+    font-weight: 700;
+    color: #1c3f7c;
+}
+
+header p {
+    color: #5f7ca0;
+}
+
+hr {
+    border-top: 1px solid rgba(28, 63, 124, 0.15);
+}
+.hidden {
+    display: none;
+}
+
+.view {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+    border-radius: 22px;
+    padding: 30px 25px;
+    box-shadow:
+        0 8px 25px rgba(181,198,255,0.4),
+        0 2px 8px rgba(140,154,183,0.2);
+}
+
+
+/* ==== TARJETA GLASS (SCAN / HELP) ==== */
+#scan-view,
+#help-view {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    border-radius: 22px;
+    padding: 30px 25px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+        0 8px 25px rgba(181, 198, 255, 0.4),
+        0 2px 8px rgba(140, 154, 183, 0.2);
+}
+
+/* ==== QR SCANNER ==== */
+#qr-scanner-wrapper {
+    background: #f9faff;
+    border-radius: 15px;
+    padding: 15px;
+    border: 1px solid #cfdaee;
+}
+
+/* ==== TEXTO CAMA ==== */
+#cama-id-display {
+    color: #4376ff;
+    font-weight: bold;
+}
+
+/* ==== BOTÓN DE AYUDA (BOTÓN PRINCIPAL) ==== */
+.btn-help-large {
+    background: linear-gradient(135deg, #ff4d4d, #ff2d2d);
+    border: none;
+    font-size: 2.2rem;
+    font-weight: 700;
+    border-radius: 18px;
+    height: 38vh;
+    letter-spacing: 1px;
+    transition: all 0.25s ease;
+}
+
+.btn-help-large:hover {
+    background: linear-gradient(135deg, #ff3c3c, #e60000);
+    box-shadow: 0 10px 25px rgba(255, 77, 77, 0.45);
+    transform: translateY(-3px);
+}
+
+.btn-help-large:active {
+    transform: scale(0.97);
+}
+
+.btn-help-large:disabled {
+    background: #b1b1b1 !important;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* ==== COOLDOWN ==== */
+#cooldown-message {
+    background: #fff3cd;
+    border: 1px solid #ffe69c;
+    border-radius: 12px;
+    font-size: 0.95rem;
+}
+
+/* ==== BOTÓN DESVINCULAR ==== */
+#disconnect-button {
+    border-radius: 10px;
+    border-color: #a0aec0;
+    color: #4a5568;
+    transition: 0.2s;
+}
+
+#disconnect-button:hover {
+    background: #edf2f7;
+    color: #2d3748;
+}
+
+/* ==== MENSAJE ERROR ==== */
+#scan-error-message {
+    color: #e53e3e;
+    font-weight: 500;
+}
+
+/* ==== MOBILE ==== */
+@media (max-width: 480px) {
+    .btn-help-large {
+        font-size: 2rem;
+        height: 35vh;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+}
+
