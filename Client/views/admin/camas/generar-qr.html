@@ -3,22 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Editar Cama</title>
+    <title>Código QR de la Cama</title>
 
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style-forms.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
 
-    <!-- JS -->
-    <script type="module" src="../../js/api.js"></script>
-    <script type="module" src="../../js/camas.js"></script>
+    <script type="module" src="../../../js/api.js"></script>
+    <script type="module" src="../../../js/camas-qr.js"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
 
-            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
@@ -51,36 +50,45 @@
             </div>
         </div>
     </nav>
+
     <div class="page-container">
         <div class="container mt-5">
-            <h1 class="page-title">Editar Cama</h1>
 
-            <div class="card-glass">
-                <form id="formEditarCama">
+            <h1 class="page-title">Código QR de la Cama</h1>
 
-                    <label class="form-label">Código:</label>
-                    <input type="text" id="codigo" class="form-control" required>
+            <div class="card-glass" style="text-align: center;">
 
-                    <label class="form-label mt-3">Número:</label>
-                    <input type="text" id="numero" class="form-control" required>
+                <p style="margin-bottom: 15px; font-weight: 500;">
+                    Escanea este QR para ver la información de la cama
+                </p>
 
-                    <label class="form-label mt-3">Habitación:</label>
-                    <select id="habitacion" class="form-control" required></select>
+                <!-- QR -->
+                <canvas id="qrCanvas" style="margin: 20px auto; display: block;"></canvas>
 
-                    <button type="submit" class="btn-main mt-4">Actualizar</button>
-                </form>
+                <!-- Estado -->
+                <h3 id="estadoCama" style="margin-top: 10px; color:#1a3c7e;"></h3>
 
-                <div class="mt-1">
-                    <button type="button" class="btn-back" onclick="window.location.href='lista.html'">
-                        Volver a la Lista
-                    </button>
-                </div>
+                <!-- Descargar -->
+                <button id="btnDescargarQR" class="btn-main" style="margin-top: 15px;">
+                    Descargar QR
+                </button>
+
+                <!-- Regresar -->
+                <button onclick="window.location.href='lista.html'" class="btn-back">
+                    Volver
+                </button>
+
             </div>
         </div>
     </div>
+
+<<<<<<< HEAD:Client/views/camas/generar-qr.html
     <script src="../../js/bootstrap.bundle.min.js"></script>
+=======
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
+>>>>>>> 9432a0dd3c61e79b407e370a532d3638b44936a6:Client/views/admin/camas/generar-qr.html
     <script type="module">
-        import { protegerRuta, logout } from "../../js/auth.js";
+        import { protegerRuta, logout } from "../../../js/auth.js";
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);

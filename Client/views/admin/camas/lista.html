@@ -3,20 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Crear Paciente</title>
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style-forms.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
+    <title>Lista de Camas</title>
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
 
-    <script type="module" src="../../js/api.js"></script>
-    <script type="module" src="../../js/pacientes.js"></script>
+    <script type="module" src="../../../js/api.js"></script>
+    <script type="module" src="../../../js/camas.js"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
 
-            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
@@ -51,43 +51,40 @@
     </nav>
     <div class="page-container">
         <div class="container mt-5">
-            <h1 class="page-title">Registrar Paciente</h1>
-            <div class="card-glass">
-                <form id="formCrearPaciente">
-                    <label>Nombre:</label>
-                    <input class="form-control" type="text" id="nombre" required>
+            <h1 class="text-center page-title mb-4">Lista de Camas</h1>
+            <div class="table-container">
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <a href="crear.html">
+                        <button class="btn-main" style="max-width: 200px;">Registrar Cama</button>
+                    </a>
+                </div>
 
-                    <label>Apellido:</label>
-                    <input class="form-control" type="text" id="apellido" required>
-
-                    <label>Edad:</label>
-                    <input class="form-control" type="number" id="edad" required>
-
-                    <label>Teléfono:</label>
-                    <input class="form-control" type="text" id="telefono" required>
-
-                    <label>Correo:</label>
-                    <input class="form-control" type="email" id="correo" required>
-
-                    <label>Diagnóstico:</label>
-                    <textarea class="form-control" id="diagnostico" rows="4"></textarea>
-
-                    <button class="btn-main" type="submit">Guardar</button>
-                </form>
-                <a href="./lista.html">
-                    <button class="btn-back">Volver</button>
-                </a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Código</th>
+                            <th>Número</th>
+                            <th>Habitación</th>
+                            <th>Paciente</th>
+                            <th style="width: 150px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaCamas"></tbody>
+                </table>
             </div>
         </div>
     </div>
-    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
+
     <script type="module">
-        import { protegerRuta, logout } from "../../js/auth.js";
+        import { protegerRuta, logout } from "../../../js/auth.js";
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
+
 </body>
 
 </html>

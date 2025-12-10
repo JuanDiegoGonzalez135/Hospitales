@@ -3,21 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Cama</title>
+    <title>Crear Paciente</title>
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
 
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style-forms.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
-
-    <script type="module" src="../../js/api.js"></script>
-    <script type="module" src="../../js/camas.js"></script>
+    <script type="module" src="../../../js/api.js"></script>
+    <script type="module" src="../../../js/pacientes.js"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
-
-            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
@@ -52,32 +50,38 @@
     </nav>
     <div class="page-container">
         <div class="container mt-5">
-            <h1 class="page-title">Registrar Cama</h1>
+            <h1 class="page-title">Registrar Paciente</h1>
             <div class="card-glass">
-                <form id="formCrearCama">
-                    <label class="form-label">Código:</label>
-                    <input type="text" id="codigo" class="form-control" required>
+                <form id="formCrearPaciente">
+                    <label>Nombre:</label>
+                    <input class="form-control" type="text" id="nombre" required>
 
-                    <label class="form-label mt-3">Número:</label>
-                    <input type="text" id="numero" class="form-control" required>
+                    <label>Apellido:</label>
+                    <input class="form-control" type="text" id="apellido" required>
 
-                    <label class="form-label mt-3">Habitación:</label>
-                    <select id="habitacion" class="form-control" required></select>
+                    <label>Edad:</label>
+                    <input class="form-control" type="number" id="edad" required>
 
-                    <button type="submit" class="btn-main mt-4">Guardar</button>
+                    <label>Teléfono:</label>
+                    <input class="form-control" type="text" id="telefono" required>
+
+                    <label>Correo:</label>
+                    <input class="form-control" type="email" id="correo" required>
+
+                    <label>Diagnóstico:</label>
+                    <textarea class="form-control" id="diagnostico" rows="4"></textarea>
+
+                    <button class="btn-main" type="submit">Guardar</button>
                 </form>
-
-                <div class="mt-1">
-                    <button type="button" class="btn-back" onclick="window.location.href='lista.html'">
-                        Volver a la Lista
-                    </button>
-                </div>
+                <a href="./lista.html">
+                    <button class="btn-back">Volver</button>
+                </a>
             </div>
         </div>
     </div>
-    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { protegerRuta, logout } from "../../js/auth.js";
+        import { protegerRuta, logout } from "../../../js/auth.js";
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);

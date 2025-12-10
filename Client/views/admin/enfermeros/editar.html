@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Enfermero</title>
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style-forms.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
-    <script type="module" src="../../js/enfermeros.js"></script>
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <script type="module" src="../../../js/enfermeros.js"></script>
 
     <style>
         /* Ajustes solo para edición */
@@ -39,7 +39,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
 
-            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
@@ -102,9 +102,9 @@
             </div>
         </div>
     </div>
-    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { protegerRuta, logout } from "../../js/auth.js";
+        import { protegerRuta, logout } from "../../../js/auth.js";
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);

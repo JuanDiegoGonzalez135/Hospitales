@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <title>Pacientes</title>
+    <title>Enfermeros</title>
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/style-forms.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
 
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/style-forms.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
-
-    <script type="module" src="../../js/api.js"></script>
-    <script type="module" src="../../js/pacientes.js"></script>
+    <script type="module" src="../../../js/enfermeros.js"></script>
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
 
-            <a class="navbar-brand brand-glow" href="../../dashboard.html">Hospital System</a>
+            <a class="navbar-brand brand-glow" href="../dashboard.html">Hospital System</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
@@ -52,11 +50,11 @@
     </nav>
     <div class="page-container">
         <div class="container mt-5">
-            <h1 class="page-title">Lista de Pacientes</h1>
+            <h1 class="page-title">Lista de Enfermeros</h1>
             <div class="table-container">
                 <div style="text-align: right; margin-bottom: 15px;">
                     <a href="crear.html">
-                        <button class="btn-main" style="max-width: 200px;">Registrar Paciente</button>
+                        <button class="btn-main" style="max-width: 200px;">Registrar Enfermero</button>
                     </a>
                 </div>
 
@@ -65,21 +63,20 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Edad</th>
+                            <th>Apellido</th>
                             <th>Teléfono</th>
                             <th>Correo</th>
-                            <th>Diagnóstico</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaPacientes"></tbody>
+
+                    <tbody id="tablaEnfermeros"></tbody>
                 </table>
             </div>
         </div>
     </div>
-    <script src="../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { protegerRuta, logout } from "../../js/auth.js";
+        import { protegerRuta, logout } from "../../../js/auth.js";
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
         history.pushState(null, "", location.href);
