@@ -185,9 +185,14 @@ export const EnfermeroAPI = {
         );
     }
 };
+/*VINCULAR ENFERMERO Y CAMA*/
+export const EnfermeroCamaAPI = {
+    asignarEnfermero(camaId, enfermeroId) {
+        return request(`${API_BASE}/isla/camas/${camaId}/asignarEnfermero/${enfermeroId}`, "POST");
+    }
+};
 
 /* --------------------- AUTH --------------------- */
-
 export const AuthAPI = {
     login(correo, password) {
         return request("http://localhost:8081/api/auth", "POST", {

@@ -151,6 +151,7 @@ public class IslaController {
         return new ResponseEntity<>(respuesta, respuesta.getStatus());
     }
 
+    // --- ASIGNAR ENFERMERO A CAMA  VAMOS A OCUPAR ESTA
     @PostMapping("/camas/{camaId}/asignarEnfermero/{enfermeroId}")
     public ResponseEntity<APIResponse> asignarEnfermero(@PathVariable Long camaId, @PathVariable Long enfermeroId){
         APIResponse respuesta = camaService.asignarEnfermero(camaId, enfermeroId);

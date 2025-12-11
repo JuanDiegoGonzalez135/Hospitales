@@ -1,5 +1,6 @@
 package utez.edu.mx.backhospitales.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
@@ -38,6 +39,7 @@ public class Enfermero {
     public Boolean notificacionesActivas = true;
 
     @ManyToMany(mappedBy = "enfermeros")
+    @JsonIgnore
     public Set<Cama> camas = new HashSet<>();
 
     public Enfermero() {}

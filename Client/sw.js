@@ -12,6 +12,7 @@ const APP_SHELL_ASSETS = [
     './css/paciente.css',
     './js/pacienteApp.js',
     'https://unpkg.com/html5-qrcode', 
+    'https://cdn.jsdelivr.net/npm/sweetalert2@11'
 ];
 
 self.addEventListener('install', event => {
