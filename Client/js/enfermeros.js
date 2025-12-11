@@ -19,8 +19,8 @@ async function cargarEnfermeros() {
             <td>${e.telefono}</td>
             <td>${e.correo}</td>
             <td>
-                <a href="editar.html?id=${e.id}">Editar</a>
-                <button onclick="eliminarEnfermero(${e.id})">Eliminar</button>
+                <a class="btn btn-warning btn-sm me-2" href="editar.html?id=${e.id}">Editar</a>
+                <button class="btn btn-danger btn-sm me-2" onclick="eliminarEnfermero(${e.id})">Eliminar</button>
             </td>
         `;
 

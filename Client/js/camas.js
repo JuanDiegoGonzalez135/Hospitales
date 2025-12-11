@@ -19,9 +19,9 @@ async function cargarCamas() {
             <td>${c.habitacion?.nombre || "Sin habitación"}</td>
             <td>${c.paciente ? c.paciente.nombre + " " + c.paciente.apellido : "Libre"}</td>
             <td>
-                <a href="editar.html?id=${c.id}">Editar</a>
-                <button onclick="eliminarCama(${c.id})">Eliminar</button>
-                <a href="generar-qr.html?id=${c.id}">Generar QR</a>
+                <a class="btn btn-warning btn-sm me-2" href="editar.html?id=${c.id}">Editar</a>
+                <button class="btn btn-danger btn-sm me-2" onclick="eliminarCama(${c.id})">Eliminar</button>
+                <a class="btn btn-info btn-sm" href="generar-qr.html?id=${c.id}">Generar QR</a>
             </td>
         `;
         tabla.appendChild(tr);
@@ -154,6 +154,7 @@ async function cargarCamaEditar() {
         const habitacion = document.getElementById("habitacion").value;
 
         if (!/^[a-zA-Z0-9]{3,}$/.test(codigo)) {
+            //por ejemplo: abc123
             errCodigo.textContent = "El código debe tener mínimo 3 caracteres y solo letras/números.";
             valido = false;
         }

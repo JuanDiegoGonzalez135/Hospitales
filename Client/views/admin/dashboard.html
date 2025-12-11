@@ -51,12 +51,10 @@
         protegerRuta();
 
         // Cargar navbar
-        fetch("/Client/components/navbar.html")
+        fetch("/components/navbar.html")
             .then(res => res.text())
             .then(html => {
                 document.getElementById("navbar").innerHTML = html;
-
-                // Conectar logout después de que se cargue el navbar
                 document.getElementById("logoutBtn")?.addEventListener("click", logout);
             });
 

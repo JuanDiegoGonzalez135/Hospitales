@@ -3,9 +3,9 @@
     "short_name": "Hospital",
     "description": "Aplicación para solicitar ayuda desde la cama del hospital, parte del proyecto de asistencia hospitalaria.",
     
-    "start_url": "/Client/views/paciente/dashboard.html",
+    "start_url": "./index.html",
     
-    "scope": "/",
+    "scope": "./",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#007bff",

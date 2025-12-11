@@ -68,5 +68,5 @@ export function aplicarVistaPorRol() {
 // 6) Cerrar sesión
 export function logout() {
     localStorage.removeItem("token");
-    window.location.href = "/Client/index.html";
+    window.location.href = "/index.html";
 }

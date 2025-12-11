@@ -1,27 +1,18 @@
 const BASE_URL = 'http://127.0.0.1:8081/api/hospitales/paciente'; // URL del Backend (8081)
 const COOLDOWN_SECONDS = 12;
 
-// --- DATOS PERSISTENTES (Carga desde LocalStorage) ---
 let camaId = localStorage.getItem('camaId') || null;
 let camaCodigo = localStorage.getItem('camaCodigo') || null; 
 let dispositivoId = localStorage.getItem('dispositivoId') || null;
 
-// Banderas y referencias (DOM, Scanner, Cooldown)
 let isProcessingScan = false; 
 let html5QrcodeScanner = null;
 let cooldownTimer = null;
 
-// DECLARACIÓN DE VARIABLES DOM (Inicializadas a null/undefined)
 let scanView, helpView, qrScannerId, scanErrorMessage, camaCodigoDisplay;
 let helpButton, cooldownMessage, countdownSpan; // Ya no necesitamos disconnectButton aquí
 
-// =================================================================
-// PERSISTENCIA Y UTILIDADES
-// =================================================================
 
-/**
- * Genera un ID de dispositivo y lo guarda en LocalStorage si no existe.
- */
 function getDeviceId() {
     if (!dispositivoId) {
         dispositivoId = 'dev-' + Math.random().toString(36).substring(2, 15);
@@ -30,34 +21,21 @@ function getDeviceId() {
     return dispositivoId;
 }
 
-/**
- * Guarda los datos de la cama y el dispositivo después de una vinculación exitosa.
- */
 function saveSession(cId, cCode) {
     camaId = cId;
     camaCodigo = cCode;
     localStorage.setItem('camaId', cId);
     localStorage.setItem('camaCodigo', cCode);
-    // Nota: dispositivoId ya fue guardado por getDeviceId()
 }
-
-/**
- * Función auxiliar para limpiar la sesión local.
- */
 function clearSession() {
     localStorage.removeItem('camaId');
     localStorage.removeItem('camaCodigo');
-    // Mantenemos dispositivoId, ya que el dispositivo sigue siendo el mismo.
     camaId = null;
     camaCodigo = null;
     if (cooldownTimer) clearInterval(cooldownTimer);
 }
 
-/**
- * Muestra la vista de escaneo y oculta la de ayuda.
- */
 function showScanView() {
-    // Se usa '?' para evitar errores si el elemento aún es null
     scanView?.classList.remove('hidden');
     helpView?.classList.add('hidden');
     scanErrorMessage?.classList.add('hidden'); 
@@ -65,16 +43,11 @@ function showScanView() {
     if (!html5QrcodeScanner) {
         initializeScanner();
     } else {
-        // Asegura que el scanner se vuelva a renderizar si fue limpiado
         html5QrcodeScanner.render(onScanSuccess, onScanError);
     }
 }
 
-/**
- * Muestra la vista de ayuda y detiene el scanner.
- */
 function showHelpView() {
-    // Detener el scanner para liberar la cámara
     if (html5QrcodeScanner) {
         html5QrcodeScanner.clear().catch(err => {
             console.error("Error al detener el scanner:", err);
@@ -90,12 +63,7 @@ function showHelpView() {
     helpButton.textContent = 'SOLICITAR ASISTENCIA';
 }
 
-// =================================================================
-// LÓGICA DE ESCANEO Y VINCULACIÓN
-// =================================================================
-
 function initializeScanner() {
-    // Comprobar que la librería esté cargada antes de usarla
     if (typeof Html5QrcodeScanner === 'undefined') {
         console.error("La librería Html5QrcodeScanner no está cargada.");
         scanErrorMessage.textContent = 'Error: No se encontró la librería del scanner.';
@@ -125,8 +93,6 @@ async function onScanSuccess(codigoCamaQR) {
 
     try {
         await html5QrcodeScanner.clear();
-
-        // 1. ANÁLISIS DEL CÓDIGO QR (Extracción de la propiedad 'codigo')
         try {
             const camaData = JSON.parse(codigoCamaQR);
             codigoCama = camaData.codigo; // <-- Extraer solo el código ("CAM")
@@ -213,9 +179,6 @@ function onScanError(errorMessage) {
     }
 }
 
-// =================================================================
-// LÓGICA DE ASISTENCIA Y COOLDOWN
-// =================================================================
 
 async function requestHelp() {
     if (!camaId) {
@@ -288,13 +251,6 @@ function startCooldown(seconds) {
     }, 1000);
 }
 
-// =================================================================
-// INICIALIZACIÓN Y DESCONEXIÓN
-// =================================================================
-
-/**
- * Llama al backend para liberar la cama y luego limpia la sesión local.
- */
 async function disconnectDevice() {
     
     if (!camaId) {
