@@ -142,3 +142,30 @@ hr {
     }
 }
 
+/* ==== SWEETALERT2 PERSONALIZADO PARA PACIENTE ==== */
+.paciente-swal-popup {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    border-radius: 22px !important;
+    padding: 20px !important;
+    box-shadow: 0 8px 25px rgba(181, 198, 255, 0.4), 0 2px 8px rgba(140, 154, 183, 0.2) !important;
+}
+
+.paciente-swal-confirm-button,
+.paciente-swal-confirm-button-error {
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    padding: 10px 20px !important;
+    background-color: #4376ff !important;
+    border: none !important;
+}
+
+.paciente-swal-confirm-button-error {
+    background-color: #e60000 !important;
+}
+
+.swal2-styled.swal2-cancel {
+    background-color: #6c757d !important;
+    color: white !important;
+}
+
