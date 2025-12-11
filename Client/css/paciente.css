@@ -142,7 +142,7 @@ hr {
     }
 }
 
-/* ==== SWEETALERT2 PERSONALIZADO PARA PACIENTE ==== */
+/* ==== SWEETALERT2 ==== */
 .paciente-swal-popup {
     background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(12px) !important;
@@ -158,6 +158,7 @@ hr {
     padding: 10px 20px !important;
     background-color: #4376ff !important;
     border: none !important;
+    transition: background-color 0.25s ease !important;
 }
 
 .paciente-swal-confirm-button-error {
