@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospital - Asistencia Paciente</title>
     <link rel="manifest" href="../../manifest.json">
-    
+
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/paciente.css">
 </head>
+
 <body>
     <div class="container text-center mt-5">
         <header class="mb-5">
@@ -17,7 +19,7 @@
             <p class="lead text-muted">Aplicación del Paciente</p>
             <hr>
         </header>
-        
+
         <div id="scan-view" class="view">
             <h2>Paso 1: Vincular Cama</h2>
             <p>Escanee el código QR de su cama para conectar su dispositivo.</p>
@@ -34,37 +36,43 @@
                 Dispositivo vinculado a la cama:
                 <span id="cama-codigo-display" class="fw-bold"></span>.
             </p>
-            
-            <div id="cooldown-message"
-                 class="alert alert-warning p-3 mb-4 hidden">
+
+            <div id="cooldown-message" class="alert alert-warning p-3 mb-4 hidden">
                 Solicitud enviada.
                 Espere <span id="countdown" class="fw-bold"></span> segundos.
             </div>
-            
-            <button id="help-button"
-                    class="btn btn-danger w-100 btn-help-large shadow">
+
+            <button id="help-button" class="btn btn-danger w-100 btn-help-large shadow">
                 SOLICITAR ASISTENCIA
             </button>
-            
-            <button id="disconnect-button" onclick="disconnectDevice()"
-                    class="btn btn-outline-secondary btn-sm mt-4">
+
+            <button id="disconnect-button" onclick="disconnectDevice()" class="btn btn-outline-secondary btn-sm mt-4">
                 Desvincular Dispositivo
             </button>
-        </div> 
+        </div>
     </div>
-    
+
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="./js/pacienteApp.js"></script>    
+    <script src="./js/pacienteApp.js"></script>
     <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker
-                .register('../../sw.js') 
-                .then(reg => console.log('SW registrado', reg))
-                .catch(err => console.error('Error SW', err));
-        });
-    }
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker
+                    .register('../../sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(err => console.error('Error SW', err));
+            });
+        }
     </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/firebase-messaging-sw.js")
+                .then(reg => console.log("SW registrado:", reg))
+                .catch(err => console.log("Error registrando SW:", err));
+        }
+    </script>
+
 </body>
+
 </html>

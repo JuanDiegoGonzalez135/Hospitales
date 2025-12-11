@@ -1,6 +1,11 @@
-// /front/js/api/Api.js
-
 const API_BASE = "http://localhost:8081/api/hospitales";
+
+import { requestPermissionAndRegister } from "./firebase.js";
+
+window.onload = async () => {
+    await requestPermissionAndRegister(1);
+};
+
 
 async function request(url, method = "GET", body = null) {
     const options = {

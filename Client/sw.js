@@ -6,13 +6,39 @@ const APP_SHELL_ASSETS = [
     './index.html',
     './views/paciente/dashboard.html',
     './manifest.json',
-    './sw.js', 
+    './sw.js',
     './css/bootstrap.min.css',
     './css/navbar.css',
     './css/paciente.css',
+    './css/style-forms.css',
+    './css/style-login.css',
+    './components/navbar.html',
+    './icons/180.png',
+    './icons/icon-192x192.png',
+    './icons/icon-512x512.png',
     './js/pacienteApp.js',
-    'https://unpkg.com/html5-qrcode', 
-    'https://cdn.jsdelivr.net/npm/sweetalert2@11'
+    'https://unpkg.com/html5-qrcode',
+    'https://cdn.jsdelivr.net/npm/sweetalert2@11',
+    './views/enfermero/camas-asignadas.html',
+    './views/enfermero/dashboard.html',
+    './views/enfermero//escanear-qr.html',
+    './views/paciente/dashboard.html',
+    './views/paciente/js/pacienteApp.js',
+    './js/api.js',
+    './js/auth.js',
+    './js/bootstrap.bundle.min.js',
+    './js/camas-qr.js',
+    './js/camas.js',
+    './js/enfermero-views.js',
+    './js/enfermeros.js',
+    './firebase-messaging-sw.js',
+    './js/firebase.js',
+    './js/habitaciones.js',
+    './js/login.js',
+    './js/pacientes.js',
+    'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
+    'https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js'
+
 ];
 
 self.addEventListener('install', event => {
@@ -44,7 +70,7 @@ self.addEventListener('activate', event => {
                 })
             );
         })
-        .then(() => self.clients.claim()) // <-- Nueva línea crítica: Toma el control inmediatamente
+            .then(() => self.clients.claim()) // <-- Nueva línea crítica: Toma el control inmediatamente
     );
     console.log('[SW] Activado y tomando control.');
 });
@@ -63,7 +89,7 @@ self.addEventListener('fetch', event => {
                     if (event.request.method === 'GET' && response.ok) {
                         return caches.open(DYNAMIC_CACHE_NAME).then(cache => {
                             // Clona la respuesta antes de ponerla en caché, ya que el cuerpo (body) solo se puede leer una vez.
-                            cache.put(event.request, response.clone()); 
+                            cache.put(event.request, response.clone());
                             return response;
                         });
                     }
@@ -71,12 +97,12 @@ self.addEventListener('fetch', event => {
                 })
                 .catch(() => {
                     // Si falla la red, usa la caché dinámica como fallback
-                    return caches.match(event.request); 
+                    return caches.match(event.request);
                 })
         );
         return;
     }
-    
+
     // 2. Estrategia Cache First / Cache Only para App Shell (Archivos Estáticos)
     event.respondWith(
         caches.match(event.request)

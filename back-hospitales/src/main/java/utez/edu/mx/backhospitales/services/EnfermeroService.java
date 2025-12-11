@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.backhospitales.Utils.APIResponse;
+import utez.edu.mx.backhospitales.Utils.FirebaseMessagingService;
 import utez.edu.mx.backhospitales.Utils.PasswordEncoder;
 import utez.edu.mx.backhospitales.models.*;
 import utez.edu.mx.backhospitales.models.dtos.CrearEnfermeroDTO;
@@ -24,7 +25,24 @@ public class EnfermeroService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private FirebaseMessagingService firebaseService;
 
+    public APIResponse mandarNotificacionAyuda(Long idEnfermero, Long camaId) {
+        Enfermero e = enfermeroRepository.findById(idEnfermero).orElse(null);
+        if (e == null) return new APIResponse(true, "Enfermero no encontrado", HttpStatus.NOT_FOUND);
+
+        String titulo = "¡Paciente requiere ayuda!";
+        String cuerpo = "La cama " + camaId + " solicitó asistencia.";
+
+        String respFirebase = firebaseService.sendNotificationToToken(
+                e.getNombre(),
+                titulo,
+                cuerpo
+        );
+
+        return new APIResponse(respFirebase, false, "Notificación enviada", HttpStatus.OK);
+    }
     public APIResponse FindAll(){
         try {
             List<Enfermero> lista = enfermeroRepository.findAll();
