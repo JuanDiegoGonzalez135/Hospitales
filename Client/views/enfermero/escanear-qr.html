@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Enfermero</title>
+    <title>Escanear QR - Enfermero</title>
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/style-forms.css">
@@ -26,9 +26,9 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="escanear-qr.html">Escanear QR</a>
+                        <a class="nav-link active" href="escanear-qr.html">Escanear QR</a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <button id="toggleNotificacionesBtn" class="btn btn-warning ms-3">
                             <span id="notifStatus">Cargando estado...</span>
@@ -46,58 +46,53 @@
 
     <div class="page-container">
         <div class="container mt-5">
-            <h1 class="page-title text-center">Dashboard Enfermero</h1>
+            <h1 class="page-title text-center">Escanear QR de Cama</h1>
+            <p class="text-center subtitle">Introduce el ID de la cama (simulando el escaneo del QR) para ver los datos básicos del paciente asignado.</p>
             
-            <div class="row mt-4">
-                <div class="col-md-6 mb-4">
-                    <div class="card-glass p-4 text-center">
-                        <h2>Ver Camas Asignadas</h2>
-                        <p>Consulta la lista de camas que tienes asignadas para monitorear a tus pacientes.</p>
-                        <a href="camas-asignadas.html" class="btn btn-primary mt-3">Ir a Camas Asignadas</a>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card-glass p-4 text-center">
-                        <h2>Escanear QR de Paciente</h2>
-                        <p>Usa el escáner para ver la información básica de un paciente por el código QR de su cama.</p>
-                        <a href="escanear-qr.html" class="btn btn-success mt-3">Ir a Escanear QR</a>
-                    </div>
-                </div>
-            </div>
+            <div class="card-glass" style="max-width: 500px; margin: 0 auto;">
+                
+                <form id="formEscanearQR">
+                    <label for="camaIdInput" class="form-label">ID de la Cama (simulación QR):</label>
+                    <input type="number" id="camaIdInput" class="form-control" placeholder="Ej: 5" required>
+                    <button type="submit" class="btn-main mt-3">Buscar Paciente</button>
+                </form>
 
-            <h2 class="mt-5 page-title text-center">Notificaciones de Pacientes (Ayuda)</h2>
-            <div id="notificacionesContainer" class="card-glass mt-3 p-3">
-                <p id="notificacionesVacias">No hay solicitudes de ayuda activas.</p>
-                <div id="listaNotificaciones">
-                    </div>
+                <h2 class="mt-4 page-title" id="resultadoTitulo" style="display: none;">Datos del Paciente</h2>
+                
+                <div id="resultadoPaciente" class="mt-3 p-3 border rounded" style="display: none; background-color: #f7f7f7;">
+                    <p><strong>Nombre:</strong> <span id="pacienteNombre"></span></p>
+                    <p><strong>Apellido:</strong> <span id="pacienteApellido"></span></p>
+                    <p><strong>Edad:</strong> <span id="pacienteEdad"></span></p>
+                    <p><strong>Diagnóstico:</strong> <span id="pacienteDiagnostico"></span></p>
+                    <p class="text-danger"><em>(NOTA: Solo se muestran datos básicos, NO el expediente médico).</em></p>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <a href="dashboard.html" class="btn-back">Volver al Dashboard</a>
+                </div>
             </div>
         </div>
     </div>
 
-
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { protegerRuta, logout } from "../../js/auth.js";
-        import { toggleNotificaciones, simularNotificacion, cargarEstadoNotificaciones } from "../../js/enfermero-views.js";
+        import { configurarFormularioEscanearQR, cargarEstadoNotificaciones, toggleNotificaciones } from "../../js/enfermero-views.js";
 
         // Proteger la ruta y manejar el cierre de sesión
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
 
-        // Lógica de notificaciones
+        // Lógica de notificaciones en navbar
         const toggleBtn = document.getElementById("toggleNotificacionesBtn");
-        
-        // 1. Cargar estado inicial de notificaciones
         cargarEstadoNotificaciones();
-        
-        // 2. Desactivar notificaciones al terminar el turno
         toggleBtn.onclick = () => {
             toggleNotificaciones();
-            cargarEstadoNotificaciones(); 
+            cargarEstadoNotificaciones();
         };
 
-        // 3. Recibir la notificación de ayuda (Simulación)
-        simularNotificacion();
+        // Configurar la lógica del formulario de "Escaneo QR"
+        configurarFormularioEscanearQR();
 
         // Mantener el estado de navegación
         history.pushState(null, "", location.href);
