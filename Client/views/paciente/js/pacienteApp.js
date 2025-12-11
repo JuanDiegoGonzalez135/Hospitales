@@ -1,10 +1,12 @@
-const BASE_URL = 'http://127.0.0.1:8081/api/hospitales/paciente'; // URL del Backend (8081)
+const BASE_URL = 'http://127.0.0.1:8081/api/hospitales/paciente'; 
 const COOLDOWN_SECONDS = 12;
 
+// --- DATOS PERSISTENTES---
 let camaId = localStorage.getItem('camaId') || null;
 let camaCodigo = localStorage.getItem('camaCodigo') || null; 
 let dispositivoId = localStorage.getItem('dispositivoId') || null;
 
+// Banderas y referencias
 let isProcessingScan = false; 
 let html5QrcodeScanner = null;
 let cooldownTimer = null;
@@ -12,6 +14,62 @@ let cooldownTimer = null;
 let scanView, helpView, qrScannerId, scanErrorMessage, camaCodigoDisplay;
 let helpButton, cooldownMessage, countdownSpan; // Ya no necesitamos disconnectButton aquí
 
+// DECLARACIÓN DE VARIABLES DOM 
+let scanView, helpView, qrScannerId, scanErrorMessage, camaCodigoDisplay;
+let helpButton, cooldownMessage, countdownSpan; // Ya no necesitamos disconnectButton aquí
+
+
+// =================================================================
+// SWEETALERT UTILITIES
+// =================================================================
+
+function showSuccessAlert(title, text) {
+    Swal.fire({
+        icon: 'success',
+        title: title,
+        text: text,
+        confirmButtonText: 'Aceptar',
+        customClass: {
+            container: 'paciente-swal-container',
+            popup: 'paciente-swal-popup',
+            confirmButton: 'paciente-swal-confirm-button',
+        }
+    });
+}
+
+
+function showInfoAlert(title, text, icon = 'info') {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        text: text,
+        confirmButtonText: 'Aceptar',
+        customClass: {
+            container: 'paciente-swal-container',
+            popup: 'paciente-swal-popup',
+            confirmButton: 'paciente-swal-confirm-button',
+        }
+    });
+}
+
+
+function showErrorAlert(title, text) {
+    Swal.fire({
+        icon: 'error',
+        title: title,
+        text: text,
+        confirmButtonText: 'Aceptar',
+        customClass: {
+            container: 'paciente-swal-container',
+            popup: 'paciente-swal-popup',
+            confirmButton: 'paciente-swal-confirm-button-error',
+        }
+    });
+}
+
+// =================================================================
+// PERSISTENCIA Y UTILIDADES
+// =================================================================
 
 function getDeviceId() {
     if (!dispositivoId) {
@@ -93,19 +151,21 @@ async function onScanSuccess(codigoCamaQR) {
 
     try {
         await html5QrcodeScanner.clear();
+
+        // 1. ANÁLISIS DEL CÓDIGO QR
         try {
             const camaData = JSON.parse(codigoCamaQR);
-            codigoCama = camaData.codigo; // <-- Extraer solo el código ("CAM")
+            codigoCama = camaData.codigo; 
         } catch (e) {
             console.error("Error al parsear JSON del QR:", e);
-            alert("Error: El código QR no tiene el formato de datos de cama esperado (JSON inválido).");
+            showErrorAlert("Error de QR", "El código QR no tiene el formato de datos de cama esperado (JSON inválido).");
             isProcessingScan = false;
             showScanView();
             return;
         }
         
         if (!codigoCama) {
-            alert("Error: No se pudo encontrar la propiedad 'codigo' dentro del QR.");
+            showErrorAlert("Error de QR", "No se pudo encontrar la propiedad 'codigo' dentro del QR.");
             isProcessingScan = false;
             showScanView();
             return;
@@ -120,19 +180,17 @@ async function onScanSuccess(codigoCamaQR) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 deviceId: deviceId, 
-                codigoCama: codigoCama // Enviamos SOLO "CAM"
+                codigoCama: codigoCama 
             })
         });
 
         const apiResponse = await response.json();
         
         // 3. MANEJO COMPLETO DE RESPUESTA Y ERRORES
-        // Si el status HTTP no es 200, O si el backend respondió 200 pero con error: true
         if (apiResponse.error || response.status !== 200) {
-            // Usamos 'mensaje' para el error del backend
             const msg = apiResponse.mensaje || apiResponse.message || 'Error desconocido al vincular.';
             
-            alert(`Error de vinculación: ${msg}`);
+            showErrorAlert("Error de vinculación", msg);
             
             isProcessingScan = false;
             showScanView(); // Regresa a la vista de escaneo
@@ -141,22 +199,16 @@ async function onScanSuccess(codigoCamaQR) {
 
         const data = apiResponse.data;
         
-        // Aseguramos que el servidor haya devuelto el ID de la cama vinculada
         if (!data || !data.camaId) {
-            alert('Error interno: El servidor no devolvió el ID de la cama.');
+            showErrorAlert("Error interno", 'El servidor no devolvió el ID de la cama.');
             isProcessingScan = false;
             showScanView(); 
             return;
         }
 
-        // 4. GUARDAR SESIÓN Y MOSTRAR VISTA DE AYUDA
-        
-        // Guardar el ID de la cama y el código de la cama en localStorage
+        // 4. GUARDAR SESIÓN Y MOSTRAR VISTA DE AYUDA        
         saveSession(data.camaId, codigoCama);
-        
-        alert(`✅ Dispositivo vinculado y asignado a la cama: ${codigoCama}`);
-        
-        // Finalmente, cambiar la vista al Paso 2 (Ayuda)
+        showSuccessAlert("¡Vinculación exitosa!", 'Dispositivo vinculado y asignado a la cama: ' + codigoCama);
         showHelpView();
 
 
@@ -182,7 +234,7 @@ function onScanError(errorMessage) {
 
 async function requestHelp() {
     if (!camaId) {
-        alert('Dispositivo no vinculado. Por favor, escanee el QR de la cama.');
+        showInfoAlert('Dispositivo no vinculado', 'Por favor, escanee el QR de la cama.');
         showScanView();
         return;
     }
@@ -208,7 +260,7 @@ async function requestHelp() {
                 return;
             } else {
                 const msg = apiResponse.mensaje || apiResponse.message || 'Error al solicitar asistencia.';
-                alert(`Error: ${msg}`);
+                showErrorAlert("Error de solicitud", msg);
                 helpButton.disabled = false;
                 helpButton.textContent = 'SOLICITAR ASISTENCIA';
                 return;
@@ -218,11 +270,11 @@ async function requestHelp() {
         // Cooldown exitoso
         const cooldownS = (apiResponse.data && apiResponse.data.cooldown_s) || COOLDOWN_SECONDS; 
         startCooldown(cooldownS);
-        alert('✅ Solicitud de asistencia enviada.');
+        showSuccessAlert("¡Solicitud enviada!", 'Se ha notificado al personal.');
 
     } catch (error) {
         console.error("Error en la solicitud de ayuda:", error);
-        alert('Error de conexión con el servidor. Intente de nuevo.');
+        showErrorAlert("Error de conexión", 'Error de conexión con el servidor. Intente de nuevo.');
         helpButton.disabled = false;
         helpButton.textContent = 'SOLICITAR ASISTENCIA';
     }
@@ -256,12 +308,30 @@ async function disconnectDevice() {
     if (!camaId) {
         // No hay cama vinculada en local, simplemente limpiamos por seguridad y recargamos.
         clearSession();
-        alert('Dispositivo desvinculado. Será redirigido a la vista de escaneo.');
+        showInfoAlert('Desvinculación local', 'Dispositivo desvinculado. Será redirigido a la vista de escaneo.');
         location.reload(); 
         return;
     }
     
-    if (confirm('¿Está seguro de que desea desvincular este dispositivo y liberar la cama?')) {
+    // Reemplazo de window.confirm por SweetAlert
+    const result = await Swal.fire({
+        icon: 'warning',
+        title: '¿Desea desvincular?',
+        text: '¿Está seguro de que desea desvincular este dispositivo y liberar la cama?',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, desvincular',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            container: 'paciente-swal-container',
+            popup: 'paciente-swal-popup',
+            confirmButton: 'paciente-swal-confirm-button-danger',
+            cancelButton: 'paciente-swal-confirm-button',
+        }
+    });
+
+    if (result.isConfirmed) {
         const endpoint = `${BASE_URL}/desvincular/${camaId}/`;
         
         try {
@@ -276,14 +346,14 @@ async function disconnectDevice() {
             if (apiResponse.error || response.status !== 200) {
                 const msg = apiResponse.mensaje || 'Error desconocido al intentar liberar la cama.';
                 console.error("Error del backend:", apiResponse);
-                alert(`Error al desvincular: ${msg}. Se borrará la sesión local, pero la cama puede seguir ocupada en el sistema.`);
+                showErrorAlert('Error al desvincular', `${msg}. Se borrará la sesión local, pero la cama puede seguir ocupada en el sistema.`);
             } else {
-                alert('Cama liberada y dispositivo desvinculado con éxito.');
+                showSuccessAlert('¡Éxito!', 'Cama liberada y dispositivo desvinculado con éxito.');
             }
             
         } catch (error) {
             console.error("Error de conexión al intentar desvincular:", error);
-            alert('Error de conexión con el servidor al desvincular. Borrando sesión local.');
+            showErrorAlert('Error de conexión', 'Error de conexión con el servidor al desvincular. Borrando sesión local.');
         } finally {
             // 2. Siempre limpiamos la sesión local
             clearSession();
@@ -297,7 +367,6 @@ async function disconnectDevice() {
  * Función principal para determinar qué vista cargar al inicio.
  */
 function init() {
-    // ASIGNACIÓN DE ELEMENTOS DEL DOM
     scanView = document.getElementById('scan-view'); 
     helpView = document.getElementById('help-view');
     qrScannerId = 'qr-scanner';
@@ -307,11 +376,8 @@ function init() {
     cooldownMessage = document.getElementById('cooldown-message');
     countdownSpan = document.getElementById('countdown');
 
-    // Asignación de evento para el botón de ayuda
     if (helpButton) helpButton.addEventListener('click', requestHelp);
     
-    // ELIMINAMOS la asignación para el botón de desvincular, se hace en el HTML.
-
     getDeviceId(); 
     
     if (camaId && camaCodigo) {
@@ -321,5 +387,4 @@ function init() {
     }
 }
 
-// Arranque garantizado
 document.addEventListener('DOMContentLoaded', init);
