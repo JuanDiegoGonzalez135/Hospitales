@@ -1,12 +1,22 @@
 import { IslaAPI } from "./api.js";
 
+
 async function cargarCamas() {
     const tabla = document.getElementById("tablaCamas");
     if (!tabla) return;
 
     const resp = await IslaAPI.getCamas();
-    const camas = resp?.data || [];
 
+    if (resp.error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron cargar las camas."
+        });
+        return;
+    }
+
+    const camas = resp?.data || [];
     tabla.innerHTML = "";
 
     camas.forEach(c => {
@@ -19,9 +29,9 @@ async function cargarCamas() {
             <td>${c.habitacion?.nombre || "Sin habitación"}</td>
             <td>${c.paciente ? c.paciente.nombre + " " + c.paciente.apellido : "Libre"}</td>
             <td>
-                <a href="editar.html?id=${c.id}">Editar</a>
-                <button onclick="eliminarCama(${c.id})">Eliminar</button>
-                <a href="generar-qr.html?id=${c.id}">Generar QR</a>
+                <a class="btn btn-warning btn-sm me-2" href="editar.html?id=${c.id}">Editar</a>
+                <button class="btn btn-danger btn-sm me-2" onclick="eliminarCama(${c.id})">Eliminar</button>
+                <a class="btn btn-info btn-sm" href="generar-qr.html?id=${c.id}">Generar QR</a>
             </td>
         `;
         tabla.appendChild(tr);
@@ -33,8 +43,17 @@ async function cargarHabitacionesEnSelect() {
     if (!select) return;
 
     const resp = await IslaAPI.getHabitaciones();
-    const habitaciones = resp?.data || [];
 
+    if (resp.error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron cargar las habitaciones."
+        });
+        return;
+    }
+
+    const habitaciones = resp?.data || [];
     select.innerHTML = "";
 
     habitaciones.forEach(h => {
@@ -97,13 +116,29 @@ if (document.getElementById("formCrearCama")) {
 
         if (!validarCampos(codigo, numero, habitacion, errCodigo, errNumero, errHabitacion)) return;
 
-        await IslaAPI.createCama({
+        const resp = await IslaAPI.createCama({
             codigo,
             numero,
             habitacion: { id: habitacion }
         });
 
-        window.location.href = "lista.html";
+        if (resp.error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: resp.mensaje || "No se pudo crear la cama."
+            });
+            return;
+        }
+
+        Swal.fire({
+            icon: "success",
+            title: "Cama creada",
+            timer: 1200,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = "lista.html";
+        });
     });
 }
 
@@ -120,7 +155,11 @@ async function cargarCamaEditar() {
     const c = respuesta?.data;
 
     if (!c) {
-        alert("Error al cargar la cama.");
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo cargar la cama."
+        });
         return;
     }
 
@@ -176,17 +215,57 @@ async function cargarCamaEditar() {
             habitacion: { id: habitacion }
         };
 
-        await IslaAPI.updateCama(id, data);
+        const resp = await IslaAPI.updateCama(id, data);
 
-        window.location.href = "lista.html";
+        if (resp.error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: resp.mensaje || "No se pudo actualizar la cama."
+            });
+            return;
+        }
+
+        Swal.fire({
+            icon: "success",
+            title: "Cama actualizada",
+            timer: 1200,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = "lista.html";
+        });
     });
 }
 
 async function eliminarCama(id) {
-    if (!confirm("¿Seguro que deseas eliminar esta cama?")) return;
+    const confirm = await Swal.fire({
+        title: "¿Eliminar cama?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    });
 
-    await IslaAPI.deleteCama(id);
-    location.reload();
+    if (!confirm.isConfirmed) return;
+
+    const resp = await IslaAPI.deleteCama(id);
+
+    if (resp.error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: resp.mensaje || "No se pudo eliminar la cama."
+        });
+        return;
+    }
+
+    Swal.fire({
+        icon: "success",
+        title: "Cama eliminada",
+        timer: 1000,
+        showConfirmButton: false
+    }).then(() => location.reload());
 }
 
 window.eliminarCama = eliminarCama;

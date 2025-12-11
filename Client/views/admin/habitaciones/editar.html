@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../../../css/style-forms.css">
     <link rel="stylesheet" href="../../../css/navbar.css">
     <script type="module" src="../../../js/habitaciones.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -39,7 +39,7 @@
         protegerRuta();
 
         // Cargar navbar
-        fetch("/Client/components/navbar.html")
+        fetch("/components/navbar.html")
             .then(res => res.text())
             .then(html => {
                 document.getElementById("navbar").innerHTML = html;

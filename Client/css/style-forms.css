@@ -244,3 +244,42 @@ tbody tr:nth-child(even) td {
     box-shadow: 0 6px 15px rgba(120,140,200,0.3);
     transform: translateY(-2px);
 }
+
+.table-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+table th {
+    background: #50a8f2;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+table td, table th {
+    vertical-align: middle !important;
+}
+
+select {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background: #50a8f2;
+    border: none;
+    padding: 6px 12px;
+    color: white;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #2b77c3;
+    transform: scale(1.05);
+}

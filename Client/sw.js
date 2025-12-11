@@ -1,27 +1,27 @@
 const STATIC_CACHE_NAME = 'app-shell-v1';
 const DYNAMIC_CACHE_NAME = 'api-data-v1';
 
-// Rutas corregidas: RELATIVAS al scope (que es '/Client/')
 const APP_SHELL_ASSETS = [
-    './', // Referencia al index.html o la raíz del scope (/Client/)
-    'views/paciente/dashboard.html',
-    'manifest.json',
-    'sw.js', 
-    'css/bootstrap.min.css',
-    'css/navbar.css',
-    'css/paciente.css',
-    'js/pacienteApp.js', // Corregido según su estructura
+    './',
+    './index.html',
+    './views/paciente/dashboard.html',
+    './manifest.json',
+    './sw.js', 
+    './css/bootstrap.min.css',
+    './css/navbar.css',
+    './css/paciente.css',
+    './js/pacienteApp.js',
     'https://unpkg.com/html5-qrcode', 
+    'https://cdn.jsdelivr.net/npm/sweetalert2@11'
 ];
 
-// Instalación: Precaching de App Shell (Cache Only)
 self.addEventListener('install', event => {
     console.log('[SW] Iniciando instalación...');
     event.waitUntil(
         caches.open(STATIC_CACHE_NAME)
             .then(cache => {
                 console.log('[SW] Precaching App Shell (Cache Only)...');
-                return cache.addAll(APP_SHELL_ASSETS); // Aquí fallaba antes
+                return cache.addAll(APP_SHELL_ASSETS);
             })
             .then(() => {
                 console.log('[SW] Instalación completa. Forzando activación.');

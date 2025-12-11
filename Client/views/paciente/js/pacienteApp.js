@@ -11,6 +11,9 @@ let isProcessingScan = false;
 let html5QrcodeScanner = null;
 let cooldownTimer = null;
 
+let scanView, helpView, qrScannerId, scanErrorMessage, camaCodigoDisplay;
+let helpButton, cooldownMessage, countdownSpan; // Ya no necesitamos disconnectButton aquí
+
 // DECLARACIÓN DE VARIABLES DOM 
 let scanView, helpView, qrScannerId, scanErrorMessage, camaCodigoDisplay;
 let helpButton, cooldownMessage, countdownSpan; // Ya no necesitamos disconnectButton aquí
@@ -68,9 +71,6 @@ function showErrorAlert(title, text) {
 // PERSISTENCIA Y UTILIDADES
 // =================================================================
 
-/**
- * Genera un ID de dispositivo y lo guarda en LocalStorage si no existe.
- */
 function getDeviceId() {
     if (!dispositivoId) {
         dispositivoId = 'dev-' + Math.random().toString(36).substring(2, 15);
@@ -79,19 +79,12 @@ function getDeviceId() {
     return dispositivoId;
 }
 
-/**
- * Guarda los datos de la cama y el dispositivo después de una vinculación exitosa.
- */
 function saveSession(cId, cCode) {
     camaId = cId;
     camaCodigo = cCode;
     localStorage.setItem('camaId', cId);
     localStorage.setItem('camaCodigo', cCode);
 }
-
-/**
- * Función auxiliar para limpiar la sesión local.
- */
 function clearSession() {
     localStorage.removeItem('camaId');
     localStorage.removeItem('camaCodigo');
@@ -100,9 +93,6 @@ function clearSession() {
     if (cooldownTimer) clearInterval(cooldownTimer);
 }
 
-/**
- * Muestra la vista de escaneo y oculta la de ayuda.
- */
 function showScanView() {
     scanView?.classList.remove('hidden');
     helpView?.classList.add('hidden');
@@ -115,11 +105,7 @@ function showScanView() {
     }
 }
 
-/**
- * Muestra la vista de ayuda y detiene el scanner.
- */
 function showHelpView() {
-    // Detener el scanner para liberar la cámara
     if (html5QrcodeScanner) {
         html5QrcodeScanner.clear().catch(err => {
             console.error("Error al detener el scanner:", err);
@@ -134,10 +120,6 @@ function showHelpView() {
     helpButton.disabled = false;
     helpButton.textContent = 'SOLICITAR ASISTENCIA';
 }
-
-// =================================================================
-// LÓGICA DE ESCANEO Y VINCULACIÓN
-// =================================================================
 
 function initializeScanner() {
     if (typeof Html5QrcodeScanner === 'undefined') {
@@ -249,9 +231,6 @@ function onScanError(errorMessage) {
     }
 }
 
-// =================================================================
-// LÓGICA DE ASISTENCIA Y COOLDOWN
-// =================================================================
 
 async function requestHelp() {
     if (!camaId) {
@@ -324,13 +303,6 @@ function startCooldown(seconds) {
     }, 1000);
 }
 
-// =================================================================
-// INICIALIZACIÓN Y DESCONEXIÓN
-// =================================================================
-
-/**
- * Llama al backend para liberar la cama y luego limpia la sesión local.
- */
 async function disconnectDevice() {
     
     if (!camaId) {

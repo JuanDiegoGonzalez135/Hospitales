@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Habitación</title>
-
-    <!-- Styles -->
+    <title>Asignación de Enfermeros a Camas</title>
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../css/style-forms.css">
     <link rel="stylesheet" href="../../../css/navbar.css">
-    <script type="module" src="../../../js/habitaciones.js"></script>
+
+    <script src="../../../js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="../../../js/asignar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -18,22 +16,27 @@
     <div id="navbar"></div>
 
     <div class="page-container">
-        <div class="container mt-5">
-            <h1 class="page-title">Crear Habitación</h1>
-            <div class="card-glass">
-                <form id="formCrearHabitacion">
-                    <label for="nombre">Nombre de la Habitación</label>
-                    <input class="form-control mb-3" type="text" id="nombre" required>
-                    <button class="btn-main" type="submit">Guardar</button>
-                </form>
-                <a href="./lista.html">
-                    <button class="btn-back">Volver</button>
-                </a>
+        <div class="container mt-5 text-center">
+            <h1>Asignación de Enfermeros a Camas</h1>
+            <div class="table-container">
+                <table class="table table-hover table-striped table-bordered shadow-sm">
+                    <thead>
+                        <tr>
+                            <th>ID Cama</th>
+                            <th>Número / Código</th>
+                            <th>Enfermero Actual</th>
+                            <th>Asignar Nuevo Enfermero</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tabla-asignaciones">
+                        <!-- Se llena desde asignar.js -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <script type="module" src="../../../js/habitaciones.js"></script>
-    <script src="../../../js/bootstrap.bundle.min.js"></script>
+
     <script type="module">
         import { protegerRuta, logout } from "../../../js/auth.js";
 

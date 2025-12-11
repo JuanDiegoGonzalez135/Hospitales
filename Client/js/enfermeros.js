@@ -1,12 +1,22 @@
 import { EnfermeroAPI } from "./api.js";
 
+
 async function cargarEnfermeros() {
     const tabla = document.getElementById("tablaEnfermeros");
     if (!tabla) return;
 
     const respuesta = await EnfermeroAPI.getAll();
-    const enfermeros = respuesta?.data || [];
 
+    if (respuesta.error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron cargar los enfermeros."
+        });
+        return;
+    }
+
+    const enfermeros = respuesta?.data || [];
     tabla.innerHTML = "";
 
     enfermeros.forEach(e => {
@@ -19,8 +29,8 @@ async function cargarEnfermeros() {
             <td>${e.telefono}</td>
             <td>${e.correo}</td>
             <td>
-                <a href="editar.html?id=${e.id}">Editar</a>
-                <button onclick="eliminarEnfermero(${e.id})">Eliminar</button>
+                <a class="btn btn-warning btn-sm me-2" href="editar.html?id=${e.id}">Editar</a>
+                <button class="btn btn-danger btn-sm me-2" onclick="eliminarEnfermero(${e.id})">Eliminar</button>
             </td>
         `;
 
@@ -88,9 +98,25 @@ if (document.getElementById("formCrearEnfermero")) {
         if (!valido) return;
 
         const data = { nombre, apellido, telefono, correo, password };
+        const resp = await EnfermeroAPI.create(data);
 
-        await EnfermeroAPI.create(data);
-        window.location.href = "lista.html";
+        if (resp.error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: resp.mensaje || "No se pudo crear el enfermero."
+            });
+            return;
+        }
+
+        Swal.fire({
+            icon: "success",
+            title: "Enfermero creado",
+            timer: 1200,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = "lista.html";
+        });
     });
 }
 
@@ -105,7 +131,11 @@ async function cargarEnfermeroEditar() {
     const e = resp?.data;
 
     if (!e) {
-        alert("Error cargando enfermero");
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo cargar el enfermero."
+        });
         return;
     }
 
@@ -119,8 +149,8 @@ async function cargarEnfermeroEditar() {
     const errTelefono = crearErrorSpan("telefono");
     const errCorreo = crearErrorSpan("correo");
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    form.addEventListener("submit", async (ev) => {
+        ev.preventDefault();
 
         errNombre.textContent = "";
         errApellido.textContent = "";
@@ -157,16 +187,57 @@ async function cargarEnfermeroEditar() {
         if (!valido) return;
 
         const data = { nombre, apellido, telefono, correo };
+        const updateResp = await EnfermeroAPI.update(id, data);
 
-        await EnfermeroAPI.update(id, data);
-        window.location.href = "lista.html";
+        if (updateResp.error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: updateResp.mensaje || "No se pudo actualizar."
+            });
+            return;
+        }
+
+        Swal.fire({
+            icon: "success",
+            title: "Enfermero actualizado",
+            timer: 1200,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = "lista.html";
+        });
     });
 }
 
 async function eliminarEnfermero(id) {
-    if (!confirm("¿Seguro que deseas eliminar este enfermero?")) return;
-    await EnfermeroAPI.delete(id);
-    location.reload();
+    const confirm = await Swal.fire({
+        title: "¿Eliminar enfermero?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    const resp = await EnfermeroAPI.delete(id);
+
+    if (resp.error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: resp.mensaje || "No se pudo eliminar el enfermero."
+        });
+        return;
+    }
+
+    Swal.fire({
+        icon: "success",
+        title: "Enfermero eliminado",
+        timer: 1000,
+        showConfirmButton: false
+    }).then(() => location.reload());
 }
 
 cargarEnfermeros();

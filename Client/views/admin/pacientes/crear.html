@@ -10,6 +10,7 @@
 
     <script type="module" src="../../../js/api.js"></script>
     <script type="module" src="../../../js/pacientes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -49,40 +50,24 @@
     <script src="../../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { protegerRuta, logout } from "../../../js/auth.js";
-
-        // Proteger ruta
         protegerRuta();
-
-        // Cargar navbar
-        fetch("/Client/components/navbar.html")
+        fetch("/components/navbar.html")
             .then(res => res.text())
             .then(html => {
                 document.getElementById("navbar").innerHTML = html;
-
-                // Conectar logout después de que se cargue el navbar
                 document.getElementById("logoutBtn")?.addEventListener("click", logout);
             });
-
-        // Bloquear retroceso
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script><script type="module">
         import { protegerRuta, logout } from "../../../js/auth.js";
-
-        // Proteger ruta
         protegerRuta();
-
-        // Cargar navbar
-        fetch("/Client/components/navbar.html")
+        fetch("/components/navbar.html")
             .then(res => res.text())
             .then(html => {
                 document.getElementById("navbar").innerHTML = html;
-
-                // Conectar logout después de que se cargue el navbar
                 document.getElementById("logoutBtn")?.addEventListener("click", logout);
             });
-
-        // Bloquear retroceso
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
