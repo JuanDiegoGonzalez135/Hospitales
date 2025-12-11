@@ -1,5 +1,9 @@
 import { IslaAPI } from "./api.js";
-
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+    .then(reg => console.log('SW registrado:', reg))
+    .catch(err => console.error('Error al registrar el SW:', err));
+}
 // --- Leer ID de cama desde la URL ---
 const params = new URLSearchParams(window.location.search);
 const camaId = params.get("id");
