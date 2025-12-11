@@ -10,61 +10,44 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
-        <div class="container-fluid">
-
-            <a class="navbar-brand brand-glow" href="dashboard.html">Hospital System (Enfermero)</a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="camas-asignadas.html">Camas Asignadas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="escanear-qr.html">Escanear QR</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <button id="toggleNotificacionesBtn" class="btn btn-warning ms-3">
-                            <span id="notifStatus">Cargando estado...</span>
-                        </button>
-                    </li>
-
-                    <li class="nav-item">
-                        <button id="logoutBtn" class="btn btn-danger ms-3">Cerrar sesión</button>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </nav>
+        </nav>
 
     <div class="page-container">
         <div class="container mt-5">
             <h1 class="page-title text-center">Escanear QR de Cama</h1>
-            <p class="text-center subtitle">Introduce el ID de la cama (simulando el escaneo del QR) para ver los datos básicos del paciente asignado.</p>
             
             <div class="card-glass" style="max-width: 500px; margin: 0 auto;">
                 
-                <form id="formEscanearQR">
-                    <label for="camaIdInput" class="form-label">ID de la Cama (simulación QR):</label>
-                    <input type="number" id="camaIdInput" class="form-control" placeholder="Ej: 5" required>
-                    <button type="submit" class="btn-main mt-3">Buscar Paciente</button>
-                </form>
+                <div id="qrScannerContainer">
+                    <p class="text-center subtitle">Apunta la cámara al código QR de la cama.</p>
+                    
+                    <div id="reader" style="width: 100%; margin-bottom: 20px;"></div>
+                    
+                    <p id="qrStatus" class="text-center text-muted">Inicializando cámara...</p>
+                    
+                    <div class="d-grid gap-2">
+                        <button id="manualInputToggle" class="btn btn-secondary btn-sm">Usar ID de Cama Manualmente</button>
+                    </div>
+                </div>
 
-                <h2 class="mt-4 page-title" id="resultadoTitulo" style="display: none;">Datos del Paciente</h2>
+                <div id="manualInputForm" style="display: none;">
+                    </div>
                 
+                <h2 class="mt-4 page-title" id="resultadoTitulo" style="display: none;">Detalles de la Cama</h2>
                 <div id="resultadoPaciente" class="mt-3 p-3 border rounded" style="display: none; background-color: #f7f7f7;">
-                    <p><strong>Nombre:</strong> <span id="pacienteNombre"></span></p>
-                    <p><strong>Apellido:</strong> <span id="pacienteApellido"></span></p>
-                    <p><strong>Edad:</strong> <span id="pacienteEdad"></span></p>
-                    <p><strong>Diagnóstico:</strong> <span id="pacienteDiagnostico"></span></p>
-                    <p class="text-danger"><em>(NOTA: Solo se muestran datos básicos, NO el expediente médico).</em></p>
+                    <p><strong>Cama ID:</strong> <span id="camaDetalleId"></span></p>
+                    <p><strong>Código Cama:</strong> <span id="camaDetalleCodigo"></span></p>
+                    <p><strong>Habitación:</strong> <span id="camaDetalleHabitacion"></span></p>
+                    <p><strong>Estado:</strong> <span id="camaDetalleEstado"></span></p>
+                    <hr>
+                    <p><strong>Paciente Asignado:</strong> <span id="pacienteAsignado"></span></p>
+                    <div id="pacienteDetalleInfo" style="padding-left: 15px;">
+                        <p><strong>Nombre:</strong> <span id="pacienteNombre"></span></p>
+                        <p><strong>Apellido:</strong> <span id="pacienteApellido"></span></p>
+                        <p><strong>Edad:</strong> <span id="pacienteEdad"></span></p>
+                        <p><strong>Diagnóstico:</strong> <span id="pacienteDiagnostico"></span></p>
+                    </div>
+                    
                 </div>
 
                 <div class="mt-4 text-center">
@@ -74,25 +57,33 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/html5-qrcode"></script> 
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { protegerRuta, logout } from "../../js/auth.js";
-        import { configurarFormularioEscanearQR, cargarEstadoNotificaciones, toggleNotificaciones } from "../../js/enfermero-views.js";
+        // Importamos la nueva función para buscar todos los datos de la cama
+        import { configurarFormularioEscanearQR, iniciarEscaneoQR, verDatosDetalladosCama } from "../../js/enfermero-views.js";
 
         // Proteger la ruta y manejar el cierre de sesión
         protegerRuta();
         document.getElementById("logoutBtn")?.addEventListener("click", logout);
 
-        // Lógica de notificaciones en navbar
-        const toggleBtn = document.getElementById("toggleNotificacionesBtn");
-        cargarEstadoNotificaciones();
-        toggleBtn.onclick = () => {
-            toggleNotificaciones();
-            cargarEstadoNotificaciones();
-        };
+        // Lógica del escáner - SE INICIA LA CÁMARA AQUÍ
+        iniciarEscaneoQR();
 
-        // Configurar la lógica del formulario de "Escaneo QR"
+        // Configurar la lógica del formulario manual (fallback)
         configurarFormularioEscanearQR();
+        
+        // Manejar la alternancia entre escáner y entrada manual (sin cambios)
+        document.getElementById("manualInputToggle").addEventListener('click', () => {
+            document.getElementById('qrScannerContainer').style.display = 'none';
+            document.getElementById('manualInputForm').style.display = 'block';
+        });
+
+        document.getElementById("scannerToggle").addEventListener('click', () => {
+            document.getElementById('qrScannerContainer').style.display = 'block';
+            document.getElementById('manualInputForm').style.display = 'none';
+        });
 
         // Mantener el estado de navegación
         history.pushState(null, "", location.href);

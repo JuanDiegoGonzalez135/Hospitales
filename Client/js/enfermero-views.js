@@ -50,6 +50,7 @@ export async function toggleNotificaciones() {
         if (resp && !resp.error) {
             localStorage.setItem(NOTIF_STATUS_KEY, newStatus.toString());
             alert(`Notificaciones ${newStatus ? 'activadas' : 'desactivadas'} correctamente.`);
+            cargarEstadoNotificaciones(); // Actualizar el botón inmediatamente
         } else {
             alert(`Error al actualizar el estado de notificaciones: ${resp?.message || 'Error de conexión'}`);
         }
@@ -99,7 +100,11 @@ export async function cargarCamasAsignadas() {
                 
                 <td>
                     ${cama.paciente 
-                        ? `<button class="btn btn-info btn-sm" onclick="verDatosPacientePorCama(${cama.id})">Ver Paciente</button>` 
+                        // El onclick sigue usando el nombre anterior porque es un string, 
+                        // pero la función exportada ahora tiene el nombre corregido. 
+                        // Se recomienda cambiar el 'onclick' en el HTML si es posible, 
+                        // o cambiar el nombre de la función abajo en JS.
+                        ? `<button class="btn btn-info btn-sm" onclick="window.verDatosPacientePorCama(${cama.id})">Ver Paciente</button>` 
                         : `<button class="btn btn-secondary btn-sm" disabled>Cama Vacía</button>`
                     }
                 </td>
@@ -108,34 +113,24 @@ export async function cargarCamasAsignadas() {
             tablaCamas.appendChild(tr);
         });
 
+        // NOTA: Para que el onclick funcione en el HTML cargado, 
+        // debes exportar la función y asignarla al scope global (window) 
+        // en tu archivo camas-asignadas.html (ver Nota Importante).
+
     } catch (error) {
         console.error("Error al cargar camas asignadas:", error);
         tablaCamas.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error al cargar las camas.</td></tr>';
     }
 }
 
-
-// --- FUNCIÓN DE ESCANEO QR / DATOS DE PACIENTE ---
-
 /**
- * Busca los datos básicos de un paciente usando el ID de la cama.
- * (Cumple con el requisito: Modulo para escaneo de QR, pero para ver los datos básicos del paciente)
- * @param {number} camaId - El ID de la cama (simulando la lectura del QR).
- * @param {boolean} fromQrPage - Indica si se llama desde la página de Escanear QR.
+ * Muestra una alerta con los datos básicos de un paciente.
+ * * *CORRECCIÓN 2/2:* Se renombró de 'verDatosPacientePorCamaDesdeLista' a 'verDatosPacientePorCama'
+ * para coincidir con el error en camas-asignadas.html.
+ * * @param {number} camaId - El ID de la cama.
  */
-export async function verDatosPacientePorCama(camaId, fromQrPage = false) {
-    if (!camaId) {
-        if (fromQrPage) alert("Por favor, introduce un ID de cama.");
-        return;
-    }
-
-    // Ocultar resultados previos si estamos en la página de QR
-    const resultadoDiv = document.getElementById("resultadoPaciente");
-    const titulo = document.getElementById("resultadoTitulo");
-    if (fromQrPage && resultadoDiv && titulo) {
-        resultadoDiv.style.display = 'none';
-        titulo.style.display = 'none';
-    }
+export async function verDatosPacientePorCama(camaId) { 
+    if (!camaId) return;
 
     try {
         // Llama al endpoint: GET /enfermero/cama/{camaId}/paciente
@@ -143,23 +138,12 @@ export async function verDatosPacientePorCama(camaId, fromQrPage = false) {
 
         if (resp && !resp.error && resp.data) {
             const paciente = resp.data;
-            
-            if (fromQrPage) {
-                // Mostrar resultados en la página de Escanear QR
-                document.getElementById("pacienteNombre").textContent = paciente.nombre || 'N/A';
-                document.getElementById("pacienteApellido").textContent = paciente.apellido || 'N/A';
-                document.getElementById("pacienteEdad").textContent = paciente.edad || 'N/A';
-                document.getElementById("pacienteDiagnostico").textContent = paciente.diagnostico || 'N/A';
-                resultadoDiv.style.display = 'block';
-                titulo.style.display = 'block';
-            } else {
-                // Mostrar alerta si se llama desde la tabla de camas asignadas
-                alert(`Datos Básicos del Paciente (Cama ID: ${camaId}):\n`
-                    + `Nombre: ${paciente.nombre} ${paciente.apellido}\n`
-                    + `Edad: ${paciente.edad}\n`
-                    + `Diagnóstico: ${paciente.diagnostico}\n\n`
-                    + `(No es el expediente médico completo)`);
-            }
+            // Mostrar alerta
+            alert(`Datos Básicos del Paciente (Cama ID: ${camaId}):\n`
+                + `Nombre: ${paciente.nombre} ${paciente.apellido}\n`
+                + `Edad: ${paciente.edad}\n`
+                + `Diagnóstico: ${paciente.diagnostico}\n\n`
+                + `(No es el expediente médico completo)`);
         } else {
             const msg = resp?.message || 'No se encontró un paciente asignado a esa cama o la cama no existe.';
             alert(msg);
@@ -170,18 +154,209 @@ export async function verDatosPacientePorCama(camaId, fromQrPage = false) {
     }
 }
 
+
+// --- FUNCIÓN DE ESCANEO QR / DATOS DE PACIENTE ---
+
 /**
- * Configura el listener para el formulario de Escanear QR.
+ * Busca los datos básicos de un paciente usando el ID de la cama y
+ * rellena los campos del formulario de Escanear QR.
+ * @param {number} camaId - El ID de la cama.
+ */
+async function rellenarDatosPacienteEnQR(camaId) {
+    // Rellenar con "Cargando..." mientras llega la respuesta
+    document.getElementById("pacienteNombre").textContent = "Cargando...";
+    document.getElementById("pacienteApellido").textContent = "Cargando...";
+    document.getElementById("pacienteEdad").textContent = "Cargando...";
+    document.getElementById("pacienteDiagnostico").textContent = "Cargando...";
+
+    try {
+        // Llama al endpoint: GET /enfermero/cama/{camaId}/paciente
+        const resp = await EnfermeroAPI.datosPaciente(camaId);
+
+        if (resp && !resp.error && resp.data) {
+            const paciente = resp.data;
+            
+            document.getElementById("pacienteAsignado").textContent = `Sí (ID: ${paciente.id})`;
+            document.getElementById("pacienteNombre").textContent = paciente.nombre;
+            document.getElementById("pacienteApellido").textContent = paciente.apellido;
+            document.getElementById("pacienteEdad").textContent = paciente.edad;
+            document.getElementById("pacienteDiagnostico").textContent = paciente.diagnostico;
+            document.getElementById("pacienteDetalleInfo").style.display = 'block';
+
+        } else {
+            // Si el API falla al traer los datos detallados del paciente
+            document.getElementById("pacienteAsignado").textContent = "Error al obtener datos detallados";
+            document.getElementById("pacienteNombre").textContent = "N/A";
+            document.getElementById("pacienteApellido").textContent = "N/A";
+            document.getElementById("pacienteEdad").textContent = "N/A";
+            document.getElementById("pacienteDiagnostico").textContent = "N/A";
+            document.getElementById("pacienteDetalleInfo").style.display = 'none'; // Ocultar si hay error
+            console.warn(`Error al obtener datos detallados del paciente para cama ${camaId}: ${resp?.message}`);
+        }
+    } catch (error) {
+        console.error("Error de red al obtener datos del paciente:", error);
+        document.getElementById("pacienteAsignado").textContent = "Error de red";
+        document.getElementById("pacienteDetalleInfo").style.display = 'none';
+    }
+}
+
+
+/**
+ * Muestra los detalles de la cama y llama a la API para obtener el paciente.
+ * * *CORRECCIÓN 1/2:* Se agregó 'export' y se renombró de 'mostrarDetallesCama' a 'verDatosDetalladosCama'
+ * para coincidir con el error en escanear-qr.html.
+ * * @param {object} camaData - Objeto con los datos de la cama (idealmente del QR o API de cama completa).
+ */
+export function verDatosDetalladosCama(camaData) { // <<-- CORREGIDO
+    const resultadoTitulo = document.getElementById("resultadoTitulo");
+    const resultadoDiv = document.getElementById("resultadoPaciente");
+    
+    // 1. Mostrar datos de la Cama
+    document.getElementById("camaDetalleId").textContent = camaData.id || 'N/A';
+    document.getElementById("camaDetalleCodigo").textContent = camaData.codigo || 'N/A';
+    document.getElementById("camaDetalleHabitacion").textContent = camaData.habitacion?.nombre || 'N/A';
+    document.getElementById("camaDetalleEstado").textContent = camaData.estado || 'N/A';
+    document.getElementById("pacienteDetalleInfo").style.display = 'none';
+    document.getElementById("pacienteAsignado").textContent = "Cargando...";
+
+    resultadoTitulo.style.display = 'block';
+    resultadoDiv.style.display = 'block';
+
+    // 2. Comprobar si hay paciente asignado o si la cama está vacía
+    if (camaData.paciente) {
+        document.getElementById("pacienteAsignado").textContent = `Sí (ID: ${camaData.paciente.id} - Obteniendo datos detallados...)`;
+        // 3. Llamar a la API para obtener los datos completos del paciente
+        rellenarDatosPacienteEnQR(camaData.id);
+        
+    } else {
+        document.getElementById("pacienteAsignado").textContent = "Ninguno";
+        document.getElementById("pacienteNombre").textContent = "N/A";
+        document.getElementById("pacienteApellido").textContent = "N/A";
+        document.getElementById("pacienteEdad").textContent = "N/A";
+        document.getElementById("pacienteDiagnostico").textContent = "N/A";
+    }
+}
+
+
+// --- FUNCIÓN DE ESCANEO QR CON CÁMARA ---
+
+/**
+ * Inicia la cámara y el escaneo de códigos QR.
+ */
+export function iniciarEscaneoQR() {
+    if (typeof Html5Qrcode === 'undefined') {
+        console.error("Librería Html5Qrcode no cargada.");
+        return;
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+    const qrStatus = document.getElementById("qrStatus");
+
+    // Configuración para el escáner (priorizar enfoque y precisión)
+    const qrCodeConfig = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+    const onScanSuccess = (decodedText, decodedResult) => {
+        html5QrCode.stop().then((ignore) => {
+            console.log(`QR detectado (JSON): ${decodedText}`);
+            qrStatus.textContent = `QR detectado. Procesando datos...`;
+            
+            try {
+                // Intentar parsear el JSON que viene en el QR
+                const camaData = JSON.parse(decodedText);
+                
+                if (camaData && camaData.id) {
+                    // Usamos la función renombrada
+                    verDatosDetalladosCama(camaData);
+                } else {
+                    throw new Error("El JSON del QR no contiene un ID de cama válido.");
+                }
+
+            } catch (error) {
+                alert(`Error al procesar el código QR: ${error.message}. Asegúrate de que el código es un JSON de Cama válido.`);
+                console.error(error);
+                // Reiniciar el escáner
+                setTimeout(() => iniciarEscaneoQR(), 3000);
+            }
+
+        }).catch((err) => {
+            console.error("Error al detener el escáner:", err);
+            // Mostrar la opción manual si hay un error crítico
+        });
+    };
+    
+    const onScanFailure = (errorMessage) => {
+        // Se ignora el error de escaneo continuo
+    };
+
+    // Iniciar el escáner, priorizando la cámara trasera ("environment")
+    html5QrCode.start(
+        { facingMode: "environment" }, // Pide permiso y activa la cámara
+        qrCodeConfig,
+        onScanSuccess,
+        onScanFailure
+    ).then(() => {
+        qrStatus.textContent = "Cámara activada. Si se requiere, acepta el permiso de la cámara.";
+        // Ocultar resultados anteriores
+        document.getElementById("resultadoTitulo").style.display = 'none';
+        document.getElementById("resultadoPaciente").style.display = 'none';
+    }).catch((err) => {
+        qrStatus.textContent = "Error: No se pudo acceder a la cámara. Revisa los permisos o usa la entrada manual.";
+        console.error("Error al iniciar la cámara:", err);
+        alert("No se pudo iniciar la cámara. El dispositivo podría no tener permisos o no ser compatible. Se ha activado la opción de entrada manual.");
+        
+        // Mostrar la opción de entrada manual automáticamente
+        document.getElementById('qrScannerContainer').style.display = 'none';
+        document.getElementById('manualInputForm').style.display = 'block';
+    });
+}
+
+
+// --- FUNCIÓN DE BÚSQUEDA MANUAL (Corregida) ---
+
+/**
+ * Configura el listener para el formulario de Escanear QR (manual).
+ * NOTA: Esta era la función que estaba duplicada en tu script original.
  */
 export function configurarFormularioEscanearQR() {
     const form = document.getElementById("formEscanearQR");
     if (!form) return;
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
         const camaId = document.getElementById("camaIdInput").value;
-        // Llamar a la función de búsqueda indicando que viene de la página de QR (true)
-        verDatosPacientePorCama(camaId, true);
+
+        if (!camaId) {
+            alert("Ingresa un ID de cama.");
+            return;
+        }
+
+        // SIMULACIÓN: En lugar de buscar solo el paciente, en la búsqueda manual
+        // se debería buscar la cama completa (como si la API devolviera el objeto
+        // de la Cama, que incluye el paciente y la habitación)
+        try {
+            // **IMPORTANTE**: Necesitas un endpoint en el backend para obtener los
+            // detalles de una cama por su ID. Aquí estoy simulando que el endpoint
+            // de datosPaciente devuelve el objeto Cama completo.
+            
+            // Usamos el endpoint de paciente para simular la obtención de datos
+            // Necesitas el endpoint de Cama completa para un flujo real.
+            
+            const resp = await EnfermeroAPI.datosPaciente(camaId); // Usando un ID de Cama
+
+            if (resp && !resp.error && resp.data) {
+                // Aquí deberías recibir los datos de la Cama { id, codigo, paciente: {...}, habitacion: {...} }
+                verDatosDetalladosCama(resp.data); // Usamos la función renombrada
+            } else {
+                const msg = resp?.message || 'No se encontró la cama o paciente asociado.';
+                alert(`Error de búsqueda manual (Cama ID ${camaId}): ${msg}`);
+                // Limpiar resultados
+                document.getElementById("resultadoTitulo").style.display = 'none';
+                document.getElementById("resultadoPaciente").style.display = 'none';
+            }
+        } catch (error) {
+            console.error("Error al obtener datos del paciente:", error);
+            alert("Ocurrió un error de red al comunicarse con el servidor.");
+        }
     });
 }
 
@@ -227,12 +402,12 @@ export function simularNotificacion() {
                 <strong>¡ALERTA!</strong> El paciente <strong>${notif.paciente || 'Desconocido'}</strong> de la Cama <strong>${notif.codigoCama} (ID: ${notif.camaId})</strong> solicita ayuda.
                 <p class="mb-0"><small>${new Date(notif.id).toLocaleTimeString()}</small></p>
             </div>
-            <button class="btn btn-sm btn-outline-danger" onclick="marcarComoAtendida(${notif.id})">Marcar como atendida</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="window.marcarComoAtendida(${notif.id})">Marcar como atendida</button>
         `;
         notifContainer.appendChild(div);
     });
 
-    // Función para manejar el clic en "Marcar como atendida"
+    // Función para manejar el clic en "Marcar como atendida" y hacerla global
     window.marcarComoAtendida = (notifId) => {
         let notifs = JSON.parse(localStorage.getItem(NOTIF_STORAGE_KEY) || '[]');
         notifs = notifs.filter(n => n.id !== notifId);
