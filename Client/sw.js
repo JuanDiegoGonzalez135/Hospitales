@@ -11,6 +11,11 @@ const APP_SHELL_ASSETS = [
     './css/navbar.css',
     './css/paciente.css',
     './js/pacienteApp.js',
+    './views/enfermeros/lista.html',
+    './views/enfermeros/crear.html',
+    './views/enfermeros/editar.html',
+    './js/enfermeros.js',
+    './js/api.js',
     'https://unpkg.com/html5-qrcode', 
     'https://cdn.jsdelivr.net/npm/sweetalert2@11'
 ];
