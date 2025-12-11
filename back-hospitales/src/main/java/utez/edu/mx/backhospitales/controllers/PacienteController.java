@@ -24,6 +24,13 @@ public class PacienteController {
         return new ResponseEntity<>(resp, resp.getStatus());
     }
 
+    // Desvincular app con QR:
+    @PostMapping("/desvincular/{idCama}/")
+    public ResponseEntity<APIResponse> desvincular(@PathVariable Long idCama){
+        APIResponse resp = pacienteService.desvincularCama(idCama);
+        return new ResponseEntity<>(resp, resp.getStatus());
+    }
+
     // Endpoint para presionar AYUDA: /api/paciente/ayuda/{idCama}
     @PostMapping("/ayuda/{idCama}/")
     public ResponseEntity<APIResponse> ayuda(@PathVariable Long idCama){

@@ -45,11 +45,27 @@ public class PacienteService {
                 return new APIResponse(true, "Codigo de cama no encontrado", HttpStatus.OK);
             }
             Cama cama = opt.get();
-            if (cama.getPaciente() == null){
-                return new APIResponse(true, "No hay paciente asignado a esta cama", HttpStatus.OK);
-            }
-            Paciente paciente = cama.getPaciente();
 
+            // 1. OBTENER Y ASIGNAR EL PACIENTE (Último creado)
+            Paciente paciente;
+            
+            if (cama.getPaciente() != null) {
+                // Si la cama ya está ocupada, vinculamos el dispositivo al paciente que ya está allí.
+                paciente = cama.getPaciente();
+            } else {
+                // Si la cama está libre, buscamos el ÚLTIMO paciente creado para asignarlo.
+                paciente = pacienteRepository.findLastCreatedPatient();
+
+                if (paciente == null) {
+                    return new APIResponse(true, "No hay pacientes disponibles para asignar a la cama.", HttpStatus.OK);
+                }
+
+                // ASIGNAR EL PACIENTE A LA CAMA (Lógica de asignación)
+                cama.setPaciente(paciente);
+                camaRepository.save(cama);
+            }
+            
+            // 2. VINCULAR EL DISPOSITIVO (Lógica de vinculación)
             // buscar si ya existe dispositivo con ese id
             Optional<DispositivoPaciente> existing = dispositivoPacienteRepository.findByDeviceId(deviceId);
             DispositivoPaciente dp;
@@ -66,17 +82,51 @@ public class PacienteService {
                 dp.setVinculado(true);
             }
             dispositivoPacienteRepository.save(dp);
+            
+            // 3. PREPARAR RESPUESTA
             Map<String,Object> r = new HashMap<>();
             r.put("cama", cama.getCodigo());
             r.put("pacienteId", paciente.getId());
             r.put("camaId", cama.getId());
-            r.put("mensaje", "Vinculado correctamente");
+            r.put("mensaje", "Vinculado y asignado correctamente");
             return new APIResponse(r, false, "Vinculado", HttpStatus.OK);
         } catch (Exception ex){
             ex.printStackTrace();
             return new APIResponse(true, "Error al vincular dispositivo", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // Liberar cama y desvincular dispositivos
+    public APIResponse desvincularCama(Long idCama){
+        try {
+            Optional<Cama> optCama = camaRepository.findById(idCama);
+            if (optCama.isEmpty()) {
+                return new APIResponse(true, "Cama no encontrada para desvincular", HttpStatus.NOT_FOUND);
+            }
+            Cama cama = optCama.get();
+
+            // 1. Liberar la cama (establecer paciente a NULL)
+            Paciente pacienteDesvinculado = cama.getPaciente();
+            cama.setPaciente(null);
+            camaRepository.save(cama);
+
+            // 2. Marcar todos los dispositivos asociados a esa cama/paciente como desvinculados
+            if (pacienteDesvinculado != null) {
+                dispositivoPacienteRepository.findByPaciente(pacienteDesvinculado)
+                    .forEach(dp -> {
+                        dp.setVinculado(false);                            
+                        dispositivoPacienteRepository.save(dp);
+                    });
+            }
+
+            return new APIResponse(false, "Cama liberada y dispositivos desvinculados", HttpStatus.OK);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new APIResponse(true, "Error al liberar la cama", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     public APIResponse solicitarAyuda(Long camaId){
         try {
