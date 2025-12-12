@@ -32,6 +32,7 @@ services:
     container_name: hospital-backend
     build: 
       context: ./back-hospitales
+      dockerfile: Dockerfile
     environment:
       SERVER_PORT: 8080
       DB_HOST: database
