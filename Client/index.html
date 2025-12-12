@@ -8,9 +8,9 @@
 
     <link rel="manifest" href="../../manifest.json">
     
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/navbar.css">
-    <link rel="stylesheet" href="../../css/style-login.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/style-login.css">
 </head>
 
 <body>
@@ -60,7 +60,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker
-                    .register('/Hospitales/Client/sw.js', { scope: '/Hospitales/' })                    .then(reg => console.log('SW registrado', reg))
+                    .register('./Hospitales/Client/sw.js', { scope: '/Hospitales/' })                    .then(reg => console.log('SW registrado', reg))
                     .catch(err => console.error('Error SW', err));
             });
         }
