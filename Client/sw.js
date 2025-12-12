@@ -23,6 +23,8 @@ const APP_SHELL_ASSETS = [
     './js/enfermeros.js',
     './js/enfermero-views.js',
     './js/api.js',
+    './js/login.js',
+    './js/pacientes.js',
     'https://unpkg.com/html5-qrcode', 
     'https://cdn.jsdelivr.net/npm/sweetalert2@11'
 ];
