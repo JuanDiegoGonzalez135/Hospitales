@@ -30,7 +30,7 @@ pipeline {
 
         stage('Construyendo y desplegando') {
             steps {
-                sh 'docker compose up --build -d'
+                sh 'docker compose up -d'
             }
         }
     }
