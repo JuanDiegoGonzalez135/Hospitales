@@ -43,6 +43,12 @@
                     <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
                 </button>
             </form>
+                <div style="margin-top: 20px; text-align: center;">
+                    <a href="/Client/views/paciente/dashboard.html" 
+                    style="color: #007bff; text-decoration: none; font-size: 1.1em;">
+                        Ingresar como Paciente
+                    </a>
+                </div>
         </div>
     </div>
 
@@ -50,6 +56,17 @@
     
 
     <script type="module" src="./js/login.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker
+                    .register('../../sw.js') 
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(err => console.error('Error SW', err));
+            });
+        }
+    </script>
 
 </body>
 
