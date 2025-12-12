@@ -30,7 +30,7 @@ pipeline {
 
         stage('Construyendo y desplegando') {
             steps {
-                sh 'docker compose up --build -d --no-cache'
+                sh 'docker compose up --build -d'
             }
         }
     }
