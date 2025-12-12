@@ -48,11 +48,13 @@ services:
       - database
     networks:
       - hospital-net
+    volumes:
+      - maven_repo/root/.m2
 
 volumes:
   hospital-volume:
     external: true
-    #esto es para el https
+  maven_repo:
 
 networks:
   hospital-net:
