@@ -4,7 +4,10 @@ pipeline {
     stages {
         stage('Parando servicios') {
             steps {
-                sh 'docker compose -p HOSPITALES down || true'
+                sh '''
+                    docker compose -p HOSPITALES down --rmi all || true
+                    docker builder prune -f || true
+                '''
             }
         }
 
