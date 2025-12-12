@@ -32,7 +32,6 @@ services:
     container_name: hospital-backend
     build: 
       context: ./back-hospitales
-      dockerfile: Dockerfile
     environment:
       SERVER_PORT: 8080
       DB_HOST: database
@@ -51,11 +50,13 @@ services:
       - database
     networks:
       - hospital-net
+    volumes:
+      - maven-repo:/root/.m2
 
 volumes:
   hospital-volume:
     external: true
-    #esto es para el https
+  maven-repo:
 
 networks:
   hospital-net:
