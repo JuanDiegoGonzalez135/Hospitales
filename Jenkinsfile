@@ -1,60 +1,43 @@
 pipeline {
     agent any
 
-    environment {
-        PATH = "/usr/local/bin:${env.PATH}"
-    }
-
     stages {
-        stage('Stopping services') {
+        stage('Parando servicios') {
             steps {
-                sh '''
-                    docker compose -p HOSPITALES down || true
-                '''
+                sh 'docker compose -p HOSPITALES down || true'
             }
         }
 
-        stage('Deleting old images') {
-            steps{
+        stage('Eliminando imágenes anteriores') {
+            steps {
                 sh '''
                     IMAGES=$(docker images --filter "label=com.docker.compose.project=HOSPITALES" -q)
                     if [ -n "$IMAGES" ]; then
                         docker rmi -f $IMAGES
+                        echo "Imagenes eliminadas correctamente"
+                    else
+                        echo "No hay imagenes por eliminar"
                     fi
                 '''
             }
         }
 
-        stage('Pulling update') {
+        stage('Obteniendo actualización') {
             steps {
-                checkout scm
+                sh 'git pull origin main' // aquí Jenkins no baja SCM, hacemos pull directo
             }
         }
 
-        stage('Building new images') {
+        stage('Construyendo y desplegando') {
             steps {
-                sh '''
-                    docker compose build --no-cache
-                '''
-            }
-        }
-
-        stage('Deploying containers') {
-            steps {
-                sh '''
-                    docker compose up -d
-                '''
+                sh 'docker compose up --build -d'
             }
         }
     }
 
     post {
-        success {
-            echo 'Pipeline ejecutado correctamente.'
-        }
-
-        failure {
-            echo 'Ocurrió un error, revisa los logs.'
-        }
+        success { echo 'Pipeline ejecutado con éxito' }
+        failure { echo 'Hubo un error en el pipeline' }
+        always { echo 'Pipeline finalizado' }
     }
 }
