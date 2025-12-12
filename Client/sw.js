@@ -3,7 +3,7 @@ const DYNAMIC_CACHE_NAME = 'api-data-v1';
 
 const APP_SHELL_ASSETS = [
     './',
-    './index.html',
+    './Client/index.html',
     './views/paciente/dashboard.html',
     './views/paciente/js/pacienteApp.js',
     './manifest.json',
