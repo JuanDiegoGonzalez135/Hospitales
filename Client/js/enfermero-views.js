@@ -1,5 +1,9 @@
 // /front/js/enfermero-views.js
-
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+    .then(reg => console.log('SW registrado:', reg))
+    .catch(err => console.error('Error al registrar el SW:', err));
+}
 import { EnfermeroAPI } from "./api.js";
 
 // --- SIMULACIÓN DE DATOS Y ESTADO ---

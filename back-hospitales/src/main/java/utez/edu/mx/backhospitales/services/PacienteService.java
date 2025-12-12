@@ -3,6 +3,7 @@ package utez.edu.mx.backhospitales.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.dao.DataIntegrityViolationException; // Importar la excepción
 import utez.edu.mx.backhospitales.Utils.APIResponse;
 import utez.edu.mx.backhospitales.models.Cama;
 import utez.edu.mx.backhospitales.models.DispositivoPaciente;
@@ -42,13 +43,14 @@ public class PacienteService {
         try {
             Optional<Cama> opt = camaRepository.findByCodigo(codigoCama);
             if (opt.isEmpty()){
-                return new APIResponse(true, "Codigo de cama no encontrado", HttpStatus.OK);
+                // Usar NOT_FOUND para errores de recurso no encontrado
+                return new APIResponse(true, "Codigo de cama no encontrado", HttpStatus.NOT_FOUND);
             }
             Cama cama = opt.get();
 
             // 1. OBTENER Y ASIGNAR EL PACIENTE (Último creado)
             Paciente paciente;
-            
+
             if (cama.getPaciente() != null) {
                 // Si la cama ya está ocupada, vinculamos el dispositivo al paciente que ya está allí.
                 paciente = cama.getPaciente();
@@ -57,24 +59,27 @@ public class PacienteService {
                 paciente = pacienteRepository.findLastCreatedPatient();
 
                 if (paciente == null) {
-                    return new APIResponse(true, "No hay pacientes disponibles para asignar a la cama.", HttpStatus.OK);
+                    // Usar NOT_FOUND para errores de recurso no encontrado
+                    return new APIResponse(true, "No hay pacientes disponibles para asignar a la cama.", HttpStatus.NOT_FOUND);
                 }
 
                 // ASIGNAR EL PACIENTE A LA CAMA (Lógica de asignación)
                 cama.setPaciente(paciente);
                 camaRepository.save(cama);
             }
-            
+
             // 2. VINCULAR EL DISPOSITIVO (Lógica de vinculación)
             // buscar si ya existe dispositivo con ese id
             Optional<DispositivoPaciente> existing = dispositivoPacienteRepository.findByDeviceId(deviceId);
             DispositivoPaciente dp;
             if (existing.isPresent()){
+                // Si existe, lo actualizamos
                 dp = existing.get();
                 dp.setCama(cama);
                 dp.setPaciente(paciente);
                 dp.setVinculado(true);
             } else {
+                // Si no existe, creamos uno nuevo
                 dp = new DispositivoPaciente();
                 dp.setDeviceId(deviceId);
                 dp.setCama(cama);
@@ -82,7 +87,7 @@ public class PacienteService {
                 dp.setVinculado(true);
             }
             dispositivoPacienteRepository.save(dp);
-            
+
             // 3. PREPARAR RESPUESTA
             Map<String,Object> r = new HashMap<>();
             r.put("cama", cama.getCodigo());
@@ -90,6 +95,14 @@ public class PacienteService {
             r.put("camaId", cama.getId());
             r.put("mensaje", "Vinculado y asignado correctamente");
             return new APIResponse(r, false, "Vinculado", HttpStatus.OK);
+        } catch (DataIntegrityViolationException dive) {
+            // Manejo específico del error de restricción única
+            // Esto ocurre cuando findByDeviceId falla (o el dispositivo ya existe)
+            // y se intenta INSERTAR un registro con un deviceId ya usado.
+            dive.printStackTrace();
+            return new APIResponse(true,
+                    "El Device ID ya se encuentra registrado. Verifique la vinculación anterior o el ID del dispositivo.",
+                    HttpStatus.BAD_REQUEST);
         } catch (Exception ex){
             ex.printStackTrace();
             return new APIResponse(true, "Error al vincular dispositivo", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -113,10 +126,10 @@ public class PacienteService {
             // 2. Marcar todos los dispositivos asociados a esa cama/paciente como desvinculados
             if (pacienteDesvinculado != null) {
                 dispositivoPacienteRepository.findByPaciente(pacienteDesvinculado)
-                    .forEach(dp -> {
-                        dp.setVinculado(false);                            
-                        dispositivoPacienteRepository.save(dp);
-                    });
+                        .forEach(dp -> {
+                            dp.setVinculado(false);
+                            dispositivoPacienteRepository.save(dp);
+                        });
             }
 
             return new APIResponse(false, "Cama liberada y dispositivos desvinculados", HttpStatus.OK);
@@ -132,17 +145,17 @@ public class PacienteService {
         try {
             Optional<Cama> opt = camaRepository.findById(camaId);
             if (opt.isEmpty()){
-                return new APIResponse(true, "Cama no encontrada", HttpStatus.OK);
+                return new APIResponse(true, "Cama no encontrada", HttpStatus.NOT_FOUND); // Ajustado a NOT_FOUND
             }
             Cama cama = opt.get();
             if (cama.getPaciente() == null){
-                return new APIResponse(true, "No hay paciente en la cama", HttpStatus.OK);
+                return new APIResponse(true, "No hay paciente en la cama", HttpStatus.NOT_FOUND); // Ajustado a NOT_FOUND
             }
             Long now = Instant.now().toEpochMilli();
             Long last = lastHelpAt.getOrDefault(camaId, 0L);
             if (now - last < COOLDOWN_MS){
                 long wait = (COOLDOWN_MS - (now - last)) / 1000;
-                return new APIResponse(true, "Cooldown activo. Intenta en " + wait + "s", HttpStatus.OK);
+                return new APIResponse(true, "Cooldown activo. Intenta en " + wait + "s", HttpStatus.TOO_MANY_REQUESTS); // Nuevo status más adecuado
             }
             lastHelpAt.put(camaId, now);
             // Crear notificacion

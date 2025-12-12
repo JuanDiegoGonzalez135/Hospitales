@@ -1,6 +1,10 @@
 const BASE_URL = 'http://127.0.0.1:8081/api/hospitales/paciente'; 
 const COOLDOWN_SECONDS = 12;
-
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+    .then(reg => console.log('SW registrado:', reg))
+    .catch(err => console.error('Error al registrar el SW:', err));
+}
 // --- DATOS PERSISTENTES---
 let camaId = localStorage.getItem('camaId') || null;
 let camaCodigo = localStorage.getItem('camaCodigo') || null; 
@@ -11,8 +15,6 @@ let isProcessingScan = false;
 let html5QrcodeScanner = null;
 let cooldownTimer = null;
 
-let scanView, helpView, qrScannerId, scanErrorMessage, camaCodigoDisplay;
-let helpButton, cooldownMessage, countdownSpan; // Ya no necesitamos disconnectButton aquí
 
 // DECLARACIÓN DE VARIABLES DOM 
 let scanView, helpView, qrScannerId, scanErrorMessage, camaCodigoDisplay;
