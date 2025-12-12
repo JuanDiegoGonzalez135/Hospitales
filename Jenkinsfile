@@ -24,7 +24,7 @@ pipeline {
 
         stage('Obteniendo actualización') {
             steps {
-                sh 'git pull origin main' // aquí Jenkins no baja SCM, hacemos pull directo
+                checkout scm // <--- esto es clave
             }
         }
 
