@@ -20,12 +20,10 @@ services:
       dockerfile: Dockerfile
     container_name: hospital-frontend
     ports:
-      - "3001:443"
+      - "3001:80"
       #"3000:80"
     networks:
       - hospital-net
-    volumes:
-      - certbot-conf:/etc/letsencrypt:ro
     depends_on:
       - backend
 
@@ -41,24 +39,20 @@ services:
       DB_USER: root
       DB_PASS: root
       #https
-      SERVER_SSL_ENABLED: true
-      SERVER_SSL_KEYSTORE_PATH: /etc/letsencrypt/live/localhost/keystore.p12
-      SERVER_SSL_KEYSTORE_PASS: changeit
+      SERVER_SSL_ENABLED: false
+      #SERVER_SSL_KEYSTORE_PATH: /etc/letsencrypt/live/localhost/keystore.p12
+      #SERVER_SSL_KEYSTORE_PASS: changeit
     ports:
       - "8081:8080"
     depends_on:
       - database
     networks:
       - hospital-net
-    volumes:
-      - certbot-conf:/etc/letsencrypt:ro
 
 volumes:
   hospital-volume:
     external: true
     #esto es para el https
-  certbot-conf:
-    external: true
 
 networks:
   hospital-net:

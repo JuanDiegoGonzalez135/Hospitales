@@ -1,5 +1,5 @@
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
+    navigator.serviceWorker.register('/sw.js')
     .then(reg => console.log('SW registrado:', reg))
     .catch(err => console.error('Error al registrar el SW:', err));
 }
@@ -34,13 +34,13 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     // Redirigir según el rol
     switch (payload.role) {
         case "ADMIN":
-            window.location.href = "./views/admin/dashboard.html";
+            window.location.href = "/views/admin/dashboard.html";
             break;
         case "ENFERMERO":
-            window.location.href = "./views/enfermero/dashboard.html";
+            window.location.href = "/views/enfermero/dashboard.html";
             break;
         case "PACIENTE":
-            window.location.href = "./views/paciente/dashboard.html";
+            window.location.href = "/views/paciente/dashboard.html";
             break;
         default:
             alert("Rol no permitido");
