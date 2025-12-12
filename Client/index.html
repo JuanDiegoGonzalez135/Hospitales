@@ -7,9 +7,9 @@
     <title>Iniciar Sesión</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="./css/style-login.css">
+    <link rel="stylesheet" href="/css/style-login.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -44,7 +44,7 @@
                 </button>
             </form>
                 <div style="margin-top: 20px; text-align: center;">
-                    <a href="/Client/views/paciente/dashboard.html" 
+                    <a href="./views/paciente/dashboard.html" 
                     style="color: #007bff; text-decoration: none; font-size: 1.1em;">
                         Ingresar como Paciente
                     </a>
@@ -55,13 +55,13 @@
     <script src="./js/bootstrap.bundle.min.js"></script>
     
 
-    <script type="module" src="./js/login.js"></script>
+    <script type="module" src="/js/login.js"></script>
 
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker
-                    .register('../../sw.js') 
+                    .register('/sw.js') 
                     .then(reg => console.log('SW registrado', reg))
                     .catch(err => console.error('Error SW', err));
             });

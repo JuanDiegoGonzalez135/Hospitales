@@ -1,0 +1,59 @@
+services:
+  database:
+    image: mysql:8
+    container_name: hospital-database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db-hospitales
+    ports:
+      - "3307:3306"
+    volumes:
+      - hospital-volume:/var/lib/mysql
+    networks:
+      - hospital-net
+    restart: unless-stopped
+
+  frontend:
+    image: client:1.0-hospitales
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+    container_name: hospital-frontend
+    ports:
+      - "3001:80"
+      #"3000:80"
+    networks:
+      - hospital-net
+    depends_on:
+      - backend
+
+  backend:
+    image: server:1.0-hospitales
+    build: ./back-hospitales
+    container_name: hospital-backend
+    environment:
+      SERVER_PORT: 8080
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_NAME: db-hospitales
+      DB_USER: root
+      DB_PASS: root
+      #https
+      SERVER_SSL_ENABLED: false
+      #SERVER_SSL_KEYSTORE_PATH: /etc/letsencrypt/live/localhost/keystore.p12
+      #SERVER_SSL_KEYSTORE_PASS: changeit
+    ports:
+      - "8081:8080"
+    depends_on:
+      - database
+    networks:
+      - hospital-net
+
+volumes:
+  hospital-volume:
+    external: true
+    #esto es para el https
+
+networks:
+  hospital-net:
+    external: true
