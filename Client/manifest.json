@@ -3,7 +3,7 @@
     "short_name": "Hospital",
     "description": "Aplicación para solicitar ayuda desde la cama del hospital, parte del proyecto de asistencia hospitalaria.",
     
-    "start_url": "./Hospitales/Client/index.html",
+    "start_url": "./Client/index.html",
     
     "scope": "./Hospitales/",
     "display": "standalone",
