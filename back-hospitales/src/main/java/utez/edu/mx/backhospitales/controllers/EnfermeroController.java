@@ -77,12 +77,4 @@ public class EnfermeroController {
 
         return new ResponseEntity<>(response, response.getStatus());
     }
-    @PostMapping("/{idEnfermero}/notificar/{camaId}")
-    public ResponseEntity<APIResponse> notificar(
-            @PathVariable Long idEnfermero,
-            @PathVariable Long camaId
-    ){
-        APIResponse resp = enfermeroService.mandarNotificacionAyuda(idEnfermero, camaId);
-        return new ResponseEntity<>(resp, resp.getStatus());
-    }
 }
