@@ -50,11 +50,13 @@ services:
       - hospital-net
     volumes:
       - maven_repo/root/.m2
+      - backend_build://app/target
 
 volumes:
   hospital-volume:
     external: true
   maven_repo:
+  backend_build:
 
 networks:
   hospital-net:
