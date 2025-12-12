@@ -1,6 +1,6 @@
 // /front/js/api/Api.js
 
-const API_BASE = "http://localhost:8081/api/hospitales";
+const API_BASE = "http:/35.171.140.149:8081/api/hospitales";
 
 async function request(url, method = "GET", body = null) {
     const options = {

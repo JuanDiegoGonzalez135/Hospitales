@@ -6,7 +6,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db-hospitales
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - hospital-volume:/var/lib/mysql
     networks:
@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: hospital-frontend
     ports:
-      - "3001:80"
+      - "80:80"
       #"3000:80"
     networks:
       - hospital-net
