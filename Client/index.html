@@ -60,7 +60,8 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker
-                    .register('./Hospitales/Client/sw.js', { scope: '/Hospitales/' })                    .then(reg => console.log('SW registrado', reg))
+                    .register('../../sw.js') 
+                    .then(reg => console.log('SW registrado', reg))
                     .catch(err => console.error('Error SW', err));
             });
         }
