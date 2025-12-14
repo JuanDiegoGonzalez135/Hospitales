@@ -1,6 +1,7 @@
 package utez.edu.mx.backhospitales.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utez.edu.mx.backhospitales.Utils.APIResponse;
@@ -67,14 +68,29 @@ public class EnfermeroController {
         return new ResponseEntity<>(resp, resp.getStatus());
     }
 
-    @PostMapping("/registrar-token/{idEnfermero}")
+    @PostMapping("/device-token")
     public ResponseEntity<APIResponse> registrarToken(
-            @PathVariable Long idEnfermero,
             @RequestBody Map<String, String> body) {
 
         String token = body.get("token");
-        APIResponse response = enfermeroService.registrarToken(idEnfermero, token);
+        String strId = body.get("enfermeroId");
 
-        return new ResponseEntity<>(response, response.getStatus());
+        if (token == null || token.isBlank()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new APIResponse(true, "Token vacío o nulo", HttpStatus.BAD_REQUEST));
+        }
+
+        if (strId == null || strId.isBlank()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new APIResponse(true, "Id de enfermero faltante", HttpStatus.BAD_REQUEST));
+        }
+
+        Long enfermeroId = Long.parseLong(strId);
+
+        var resp = enfermeroService.registrarToken(enfermeroId, token);
+        return new ResponseEntity<>(resp, resp.getStatus());
     }
+
 }

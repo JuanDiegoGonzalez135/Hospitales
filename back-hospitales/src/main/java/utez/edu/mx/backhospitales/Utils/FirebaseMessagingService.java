@@ -10,6 +10,10 @@ public class FirebaseMessagingService {
 
     public String sendNotificationToToken(String token, String title, String body) {
         try {
+            if (token == null || token.trim().isEmpty()) {
+                System.out.println("❌ Token vacío. No se envía notificación.");
+                return "Token vacío";
+            }
             Message message = Message.builder()
                     .setToken(token)
                     .setNotification(

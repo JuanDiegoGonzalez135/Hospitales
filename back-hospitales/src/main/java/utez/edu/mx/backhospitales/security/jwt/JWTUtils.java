@@ -82,9 +82,10 @@ public class JWTUtils {
     // =============================
     // 2) Token desde BeanUser (ROL REAL)
     // =============================
-    public String generateToken(UserDetails userDetails, String role) {
+    public String generateToken(UserDetails userDetails, String role, Long id) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);  // <=== Aquí el rol real del enum
+        claims.put("id", id);
         return createToken(claims, userDetails.getUsername());
     }
 

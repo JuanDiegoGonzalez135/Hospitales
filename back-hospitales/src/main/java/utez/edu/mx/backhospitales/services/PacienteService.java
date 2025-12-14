@@ -4,18 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.backhospitales.Utils.APIResponse;
-import utez.edu.mx.backhospitales.models.Cama;
-import utez.edu.mx.backhospitales.models.DispositivoPaciente;
-import utez.edu.mx.backhospitales.models.Notificacion;
-import utez.edu.mx.backhospitales.models.Paciente;
+import utez.edu.mx.backhospitales.Utils.FirebaseMessagingService;
+import utez.edu.mx.backhospitales.models.*;
 import utez.edu.mx.backhospitales.repositories.CamaRepository;
+import utez.edu.mx.backhospitales.repositories.DispositivoEnfermeroRepository;
 import utez.edu.mx.backhospitales.repositories.DispositivoPacienteRepository;
 import utez.edu.mx.backhospitales.repositories.PacienteRepository;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -25,6 +22,12 @@ public class PacienteService {
 
     @Autowired
     private DispositivoPacienteRepository dispositivoPacienteRepository;
+
+    @Autowired
+    private DispositivoEnfermeroRepository dispositivoEnfermero;
+
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
 
     @Autowired
     private CamaRepository camaRepository;
@@ -134,29 +137,74 @@ public class PacienteService {
             if (opt.isEmpty()){
                 return new APIResponse(true, "Cama no encontrada", HttpStatus.OK);
             }
+
             Cama cama = opt.get();
+
             if (cama.getPaciente() == null){
                 return new APIResponse(true, "No hay paciente en la cama", HttpStatus.OK);
             }
+
+            if (cama.getEnfermeros() == null || cama.getEnfermeros().isEmpty()){
+                return new APIResponse(true, "No hay enfermeros asignados a la cama", HttpStatus.OK);
+            }
+
+            // 1️⃣ COOL-DOWN
             Long now = Instant.now().toEpochMilli();
             Long last = lastHelpAt.getOrDefault(camaId, 0L);
+
             if (now - last < COOLDOWN_MS){
                 long wait = (COOLDOWN_MS - (now - last)) / 1000;
                 return new APIResponse(true, "Cooldown activo. Intenta en " + wait + "s", HttpStatus.OK);
             }
             lastHelpAt.put(camaId, now);
-            // Crear notificacion
-            Notificacion n = notificationService.createNotification(cama, cama.getPaciente(), "Paciente solicitó ayuda", true, true);
 
+            // 2️⃣ CREAR REGISTRO EN LA BD
+            Notificacion n = notificationService.createNotification(
+                    cama,
+                    cama.getPaciente(),
+                    "Paciente solicitó ayuda",
+                    true,
+                    true
+            );
+
+            // 3️⃣ ENVIAR NOTIFICACIÓN A **TODOS** LOS ENFERMEROS
+            List<Enfermero> enfermeros = new ArrayList<>(cama.getEnfermeros());
+            int envios = 0;
+
+            for (Enfermero enf : enfermeros){
+
+                Optional<DispositivoEnfermero> dispOp =
+                        dispositivoEnfermero.findByEnfermeroId(enf.getId());
+
+                if (dispOp.isEmpty()) continue;
+                DispositivoEnfermero disp = dispOp.get();
+
+                if (disp.getToken() == null) continue;
+
+                firebaseMessagingService.sendNotificationToToken(
+                        disp.getToken(),
+                        "Ayuda solicitada",
+                        "El paciente en la cama " + cama.getCodigo() + " solicitó ayuda."
+                );
+
+                envios++;
+            }
+
+            if (envios == 0){
+                return new APIResponse(true, "Ningún enfermero tiene dispositivo registrado", HttpStatus.OK);
+            }
+
+            // 4️⃣ RESPUESTA FINAL
             Map<String,Object> resp = new HashMap<>();
             resp.put("notificacion", n);
-            resp.put("mensaje", "Ayuda notificada");
+            resp.put("mensaje", "Notificación enviada a " + envios + " enfermeros");
             resp.put("cooldown_s", COOLDOWN_MS/1000);
+
             return new APIResponse(resp, false, "Ayuda registrada", HttpStatus.OK);
+
         } catch (Exception ex){
             ex.printStackTrace();
-            return new APIResponse(true, "Error al solicitar ayuda", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new APIResponse(true, "Error al enviar notificaciones", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

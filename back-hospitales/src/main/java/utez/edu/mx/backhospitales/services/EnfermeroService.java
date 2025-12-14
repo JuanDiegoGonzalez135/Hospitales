@@ -7,6 +7,7 @@ import utez.edu.mx.backhospitales.Utils.APIResponse;
 import utez.edu.mx.backhospitales.Utils.PasswordEncoder;
 import utez.edu.mx.backhospitales.models.*;
 import utez.edu.mx.backhospitales.models.dtos.CrearEnfermeroDTO;
+import utez.edu.mx.backhospitales.models.dtos.TokenDTO;
 import utez.edu.mx.backhospitales.repositories.*;
 
 import java.util.*;
@@ -169,34 +170,26 @@ public class EnfermeroService {
         }
     }
 
-    public APIResponse registrarToken(Long idEnfermero, String token) {
-        try {
-            Optional<Enfermero> enfOpt = enfermeroRepository.findById(idEnfermero);
-            if (enfOpt.isEmpty()) {
-                return new APIResponse(true, "Enfermero no encontrado", HttpStatus.NOT_FOUND);
-            }
+    public APIResponse registrarToken(Long enfermeroId, String token) {
 
-            Enfermero enf = enfOpt.get();
-
-            Optional<DispositivoEnfermero> existing = dispositivoRepo.findByEnfermeroId(idEnfermero);
-
-            DispositivoEnfermero dispositivo;
-
-            if (existing.isPresent()) {
-                dispositivo = existing.get();
-                dispositivo.setToken(token);
-            } else {
-                dispositivo = new DispositivoEnfermero(token, enf);
-            }
-
-            dispositivoRepo.save(dispositivo);
-
-            return new APIResponse(false, "Token registrado correctamente", HttpStatus.OK);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new APIResponse(true, "Error registrando token", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (token == null || token.isBlank()) {
+            return new APIResponse(true, "Token inválido", HttpStatus.BAD_REQUEST);
         }
-    }
 
+        Optional<Enfermero> op = enfermeroRepository.findById(enfermeroId);
+
+        if (op.isEmpty()) {
+            return new APIResponse(true, "Enfermero no encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        Enfermero e = op.get();
+
+        DispositivoEnfermero nuevo = new DispositivoEnfermero(token, e);
+        System.out.println(nuevo.getId());
+        System.out.println(nuevo.getToken());
+        System.out.println(nuevo.getEnfermero());
+        dispositivoRepo.save(nuevo);
+
+        return new APIResponse(false, "Token registrado correctamente", HttpStatus.OK);
+    }
 }

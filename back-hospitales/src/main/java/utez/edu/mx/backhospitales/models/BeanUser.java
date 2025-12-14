@@ -10,7 +10,7 @@ public class BeanUser {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false,unique = true)
-    private int id;
+    private Long id;
 
     @Pattern(
             regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$",
@@ -29,18 +29,18 @@ public class BeanUser {
 
     }
 
-    public BeanUser(int id, String correo, String password, Role role) {
+    public BeanUser(Long id, String correo, String password, Role role) {
         this.id = id;
         this.correo = correo;
         this.password = password;
         this.role = role;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

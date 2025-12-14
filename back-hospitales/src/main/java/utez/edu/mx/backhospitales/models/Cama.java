@@ -1,9 +1,9 @@
 package utez.edu.mx.backhospitales.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -61,7 +61,9 @@ public class Cama {
 
     public void setPaciente(Paciente paciente) { this.paciente = paciente; }
 
-    public Set<Enfermero> getEnfermeros() { return enfermeros; }
+    public Set<Enfermero> getEnfermeros() {
+        return enfermeros;
+    }
 
     public void setEnfermeros(Set<Enfermero> enfermeros) { this.enfermeros = enfermeros; }
 }

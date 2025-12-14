@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,9 +44,13 @@ public class Enfermero {
     @JsonIgnore
     public Set<Cama> camas = new HashSet<>();
 
+    @OneToMany(mappedBy = "enfermero", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<DispositivoEnfermero> dispositivos = new ArrayList<>();
+
     public Enfermero() {}
 
-    public Enfermero(Long id, String nombre, String apellido, String telefono, String correo, String passwordTemporal, Boolean notificacionesActivas, Set<Cama> camas) {
+    public Enfermero(Long id, String nombre, String apellido, String telefono, String correo, String passwordTemporal, Boolean notificacionesActivas, Set<Cama> camas, List<DispositivoEnfermero> dispositivos) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -53,6 +59,7 @@ public class Enfermero {
         this.passwordTemporal = passwordTemporal;
         this.notificacionesActivas = notificacionesActivas;
         this.camas = camas;
+        this.dispositivos = dispositivos;
     }
 
     public Long getId() { return id; }
@@ -89,5 +96,13 @@ public class Enfermero {
 
     public void setPasswordTemporal(String passwordTemporal) {
         this.passwordTemporal = passwordTemporal;
+    }
+
+    public List<DispositivoEnfermero> getDispositivos() {
+        return dispositivos;
+    }
+
+    public void setDispositivos(List<DispositivoEnfermero> dispositivos) {
+        this.dispositivos = dispositivos;
     }
 }

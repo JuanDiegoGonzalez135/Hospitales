@@ -101,7 +101,7 @@ public class IslaController {
     public ResponseEntity<APIResponse> createPaciente(@RequestBody Paciente paciente){
         try {
             pacienteRepository.save(paciente);
-            String randomPass = UUID.randomUUID().toString();
+            String randomPass = "123456"; //UUID.randomUUID().toString();
             BeanUser user = new BeanUser();
             user.setPassword(PasswordEncoder.encodePassword(randomPass));
             user.setCorreo(paciente.getCorreo());
