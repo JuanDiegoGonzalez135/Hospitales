@@ -179,10 +179,7 @@ export const EnfermeroAPI = {
     },
 
     registrarToken(idEnfermero, token) {
-        return request(`${API_BASE}/enfermero/registrar-token/${idEnfermero}`,
-            "POST",
-            { token }
-        );
+        return request(`${API_BASE}/enfermero/device-token`, "POST", {enfermeroId: idEnfermero,token: token});
     }
 };
 /*VINCULAR ENFERMERO Y CAMA*/

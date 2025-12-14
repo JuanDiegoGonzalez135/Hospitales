@@ -4,7 +4,7 @@ import { EnfermeroAPI } from "./api.js";
 
 // --- SIMULACIÓN DE DATOS Y ESTADO ---
 // ATENCIÓN: EN UN ENTORNO REAL, REEMPLAZAR '1' POR LA LÓGICA DE AUTENTICACIÓN.
-const ENFERMERO_ID = 1; 
+const ENFERMERO_ID = localStorage.getItem("id"); // ID del enfermero logueado
 const NOTIF_STATUS_KEY = 'enfermero_notificaciones_activas';
 const NOTIF_STORAGE_KEY = 'notificaciones_simuladas'; // Para simular notificaciones de ayuda
 

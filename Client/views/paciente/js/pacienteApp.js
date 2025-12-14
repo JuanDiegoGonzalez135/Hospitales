@@ -14,11 +14,6 @@ let cooldownTimer = null;
 let scanView, helpView, qrScannerId, scanErrorMessage, camaCodigoDisplay;
 let helpButton, cooldownMessage, countdownSpan; // Ya no necesitamos disconnectButton aquí
 
-// DECLARACIÓN DE VARIABLES DOM 
-let scanView, helpView, qrScannerId, scanErrorMessage, camaCodigoDisplay;
-let helpButton, cooldownMessage, countdownSpan; // Ya no necesitamos disconnectButton aquí
-
-
 // =================================================================
 // SWEETALERT UTILITIES
 // =================================================================

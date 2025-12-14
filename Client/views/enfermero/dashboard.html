@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/style-forms.css">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm nav-soft">
         <div class="container-fluid">
@@ -28,7 +30,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="escanear-qr.html">Escanear QR</a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <button id="toggleNotificacionesBtn" class="btn btn-warning ms-3">
                             <span id="notifStatus">Cargando estado...</span>
@@ -47,7 +49,7 @@
     <div class="page-container">
         <div class="container mt-5">
             <h1 class="page-title text-center">Dashboard Enfermero</h1>
-            
+
             <div class="row mt-4">
                 <div class="col-md-6 mb-4">
                     <div class="card-glass p-4 text-center">
@@ -69,13 +71,16 @@
             <div id="notificacionesContainer" class="card-glass mt-3 p-3">
                 <p id="notificacionesVacias">No hay solicitudes de ayuda activas.</p>
                 <div id="listaNotificaciones">
-                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 
     <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js"></script>
     <script type="module">
         import { protegerRuta, logout } from "../../js/auth.js";
         import { toggleNotificaciones, simularNotificacion, cargarEstadoNotificaciones } from "../../js/enfermero-views.js";
@@ -86,14 +91,14 @@
 
         // Lógica de notificaciones
         const toggleBtn = document.getElementById("toggleNotificacionesBtn");
-        
+
         // 1. Cargar estado inicial de notificaciones
         cargarEstadoNotificaciones();
-        
+
         // 2. Desactivar notificaciones al terminar el turno
         toggleBtn.onclick = () => {
             toggleNotificaciones();
-            cargarEstadoNotificaciones(); 
+            cargarEstadoNotificaciones();
         };
 
         // 3. Recibir la notificación de ayuda (Simulación)
@@ -103,5 +108,7 @@
         history.pushState(null, "", location.href);
         window.onpopstate = () => history.go(1);
     </script>
+    <script type="module" src="../../js/dashboard-enfermero.js"></script>
 </body>
+
 </html>

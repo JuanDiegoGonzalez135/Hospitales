@@ -24,6 +24,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     localStorage.setItem("token", token);
     localStorage.setItem("rol", payload.role);  // ADMIN, ENFERMERO, PACIENTE
     localStorage.setItem("correo", payload.sub);
+    localStorage.setItem("id", payload.id); // ID del usuario (enfermero o paciente)
 
     // Redirigir según el rol
     switch (payload.role) {
